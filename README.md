@@ -6,7 +6,7 @@ that you cannot have success. Then
 you work out the **how** and then the
 **what**...” - **Camille Kokozaki**
 
-**Curso**: Engenharia Eletrônica - Universidade Federal de Santa Catarina (UFSC), Florianópolis, SC, Brasil
+**Curso**: [Engenharia Eletrônica](http://cagr.sistemas.ufsc.br/relatorios/curriculoCurso?curso=235) - Universidade Federal de Santa Catarina ([UFSC](ufsc.br)), Florianópolis, SC, Brasil
 
 **Ementa**: Desenvolver habilidades de trabalho em equipe e de auto-aprendizagem a partir da solução de
 problemas encontrados na sociedade, cujas soluções passem pela aplicação de métodos e técnicas da engenharia
@@ -14,8 +14,20 @@ eletrônica.
 
 **Horas-Aula:** 54
 
+**Integrantes do Grupo**:
+
+- [André Martins Pio de Mattos](https://github.com/andrempmattos)
+- [Gustavo Simas da Silva](https://github.com/GSimas)
+- Ygor Gaspar Pereira
+
+**Dependências**
+
+- Python (3 ou superior)
+- Jupyter Notebook
+
 Referências:
 
 - [Prof. Fernando Rangel de Sousa](http://rangel.paginas.ufsc.br/)
+- [Empresa Júnior CONAQ](http://conaq.com.br/)
 
 ![UFSC](http://laship.ufsc.br/site/wp-content/themes/emc_completo/resource/img/filiacoes/brasao_UFSC_vertical_sigla.png) ![CTC](http://tisc.com.br/wp-content/uploads/ctcufsc.gif)
