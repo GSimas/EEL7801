@@ -18,6 +18,8 @@
 #define DISPLAY_D7			2
 #define BUTTON_MORE			7
 #define BUTTON_LESS			6
+#define BUTTON_NEXT			9
+#define BUTTON_START		10
 #define ACTUATOR			8
 
 #endif /* ABSTRACTION_LAYER_H_ */

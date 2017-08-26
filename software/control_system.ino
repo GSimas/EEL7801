@@ -7,6 +7,7 @@
 
 #include "abstraction_layer.h"
 #include "peripherals.h"
+#include "algorithme_functions.h"
 
 // Setup routine
 void setup() {
@@ -14,23 +15,22 @@ void setup() {
 	DisplaySetup();
 	ButtonSetup();
 	ActuatorSetup();
-	//Serial.begin(9600);
 }
 
 // Loop routine
 void loop() {
-	float SensorTemperature;
-	SensorTemperature = SensorRoutine();
 
-	DisplayPrint("Temperatura:", SensorTemperature);
+	while (!ButtonVerification(BUTTON_START));		// Wait the button start.
+	MenuStart();									// Initializates the system.
 
-	if (ButtonVerification(BUTTON_MORE)) {
-		ActuatorActivation(TURN_ON);
-	}
-	if (ButtonVerification(BUTTON_LESS)) {
-		ActuatorActivation(TURN_OFF);
-	}
+	MenuTemperatureSelect();						// Starts the temperature selection.
+	while (ButtonVerification(BUTTON_NEXT));		// Wait the button next.
 
-	//Serial.println(Temperature);
-	delay(1000);
+	MenuTimeSelect();								// Starts the time selection.
+	while (ButtonVerification(BUTTON_NEXT));		
+
+	MenuConfirm();									// Confirm before start.
+	while (ButtonVerification(BUTTON_NEXT));
+
+	ControlSystemRun();								// Run control loop.
 }

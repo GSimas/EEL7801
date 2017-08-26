@@ -32,16 +32,27 @@ void DisplaySetup(void) {
 	DisplayLCD.begin(16, 2);							// The display size, 2 lines and 16 columns.
 }
 
-void DisplayPrint(char Header[], float Content) {	
+void DisplayPrint(char Header[], float Content, char Menu[]) {	
 	int TextTab; 
+
+	DisplayLCD.clear();
 
 	TextTab  = (16 - strlen(Header)) / 2;				// Calculates necessary tab to center the text.
 
 	DisplayLCD.setCursor(TextTab, 0);					// Selects the First display line and gives a tab to the content.
 	DisplayLCD.print(Header);							// Prints the header.
 	
-	DisplayLCD.setCursor(TextTab, 1);					// Second line.
-	DisplayLCD.print(Content);							// Print the content information.
+	if (Content >= NULL) {
+		DisplayLCD.setCursor(TextTab, 1);				// Second line.
+		DisplayLCD.print(Content);						// Print the content information.
+	}
+
+	if (strlen(Menu)) {
+		TextTab  = (16 - strlen(Menu)) / 2;				// Menu tab.
+
+		DisplayLCD.setCursor(TextTab, 1);				// Second line.
+		DisplayLCD.print(Menu);							// Print the content information.
+	}
 }
 
 /* Button Functions */
@@ -49,6 +60,8 @@ void DisplayPrint(char Header[], float Content) {
 void ButtonSetup(void) {
 	pinMode(BUTTON_MORE, INPUT);
 	pinMode(BUTTON_LESS, INPUT);
+	pinMode(BUTTON_NEXT, INPUT);
+	pinMode(BUTTON_START, INPUT);
 }
 
 int ButtonVerification(int PushedButton) {
