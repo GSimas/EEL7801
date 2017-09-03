@@ -20,7 +20,9 @@ void setup() {
 // Loop routine
 void loop() {
 
-	while (!ButtonVerification(BUTTON_START));		// Wait the button start.
+	ResetSystemVariables();
+	
+	while (!ButtonVerification(BUTTON_NEXT));		// Wait the button start.
 	MenuStart();									// Initializates the system.
 
 	MenuTemperatureSelect();						// Starts the temperature selection.
@@ -34,3 +36,4 @@ void loop() {
 
 	ControlSystemRun();								// Run control loop.
 }
+

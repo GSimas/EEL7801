@@ -24,6 +24,7 @@ void SensorSetup(void);
 float SensorRoutine(void);
 
 void DisplaySetup(void);
+void DisplayTurnMode(int TurnMode);
 void DisplayPrint(char Header[], float Content, char Menu[]);
 
 void ButtonSetup(void);

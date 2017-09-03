@@ -17,7 +17,7 @@ float SensorRoutine(void) {
 	int SensorRead;
 	float TemperatureC;
 
-	SensorRead = analogRead(SENSOR_PIN);				// Reads the sensor analogic value.
+	SensorRead = analogRead(SENSOR_PIN_1);				// Reads the sensor analogic value.
 	TemperatureC = SensorRead / SENSOR_CONVERTION;		// Converts the raw temperature to celcius.
 	
 	return TemperatureC;
@@ -30,6 +30,17 @@ LiquidCrystal DisplayLCD (DISPLAY_RS, DISPLAY_EN, DISPLAY_D4, DISPLAY_D5, DISPLA
 
 void DisplaySetup(void) {
 	DisplayLCD.begin(16, 2);							// The display size, 2 lines and 16 columns.
+}
+
+void DisplayTurnMode(int TurnMode) {
+	switch(TurnMode) {
+		case TURN_ON:
+			DisplayLCD.display();
+			break;
+		case TURN_OFF:
+			DisplayLCD.noDisplay();
+			break;
+	}
 }
 
 void DisplayPrint(char Header[], float Content, char Menu[]) {	
@@ -61,7 +72,7 @@ void ButtonSetup(void) {
 	pinMode(BUTTON_MORE, INPUT);
 	pinMode(BUTTON_LESS, INPUT);
 	pinMode(BUTTON_NEXT, INPUT);
-	pinMode(BUTTON_START, INPUT);
+	pinMode(SWITCH, INPUT);
 }
 
 int ButtonVerification(int PushedButton) {

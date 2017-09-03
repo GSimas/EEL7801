@@ -13,14 +13,18 @@
 #include "abstraction_layer.h"
 #include "peripherals.h"
 
-#define VIEW_TIME			0
-#define VIEW_TEMPERATURE	1
+#define VIEW_TIME				0
+#define VIEW_TEMPERATURE		1
 
-#define SAFETY_TEMPERATURE	110
-#define SAFETY_TIME			45
+#define ACCURACY_TEMPERATURE	1.0
+#define SAFETY_TEMPERATURE		110
+#define SAFETY_TIME				45
 
-#define PERIOD				300
-#define PERIODS_IN_SEC		(1000.0 / PERIOD)			// 1 second
+#define PERIOD					300
+#define PERIODS_IN_SEC			(1000.0 / PERIOD)			// 1 second
+
+/* Reset System */
+void ResetSystemVariables(void);
 
 /* Menu Functions */
 void MenuStart(void);

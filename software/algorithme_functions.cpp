@@ -10,6 +10,27 @@
 int TimeCounter = 0, TemperatureSelect = 25, TimeSelect = 5;
 int ContentView;
 
+/* Reset System */
+
+void ResetSystemVariables(void) {
+	TimeCounter = 0;
+	TemperatureSelect = 25;
+	TimeSelect = 5;
+}
+
+/* Switch Interrupt */
+
+void SwitchInterrupt(void) {
+	while(ButtonVerification(SWITCH)) {		// Switch open.
+		ActuatorActivation(TURN_OFF);		// Actuator off for security.
+		DisplayTurnMode(TURN_OFF);			
+	}
+	DisplayTurnMode(TURN_ON);
+	if (SensorRoutine() < TemperatureSelect){
+		ActuatorActivation(TURN_ON);
+	}
+}
+
 /* Menu Functions */
 
 void MenuStart(void) {
@@ -19,7 +40,9 @@ void MenuStart(void) {
 }
 
 void MenuTemperatureSelect(void) {
-	/* Menu: Temperatura text */
+	int BlinkTurn = 0;
+
+	/* Menu: Temperature text */
 	DisplayPrint("Escolha a", NO_CONTENT, "temperatura!");
 	delay(3000);	
 
@@ -37,14 +60,21 @@ void MenuTemperatureSelect(void) {
 			}
 			delay(200);
 		}
-		else {
-			DisplayPrint("Temperatura(C):", TemperatureSelect, NO_MENU);		
-		}
+
+		DisplayPrint("Temperatura(C):", TemperatureSelect, NO_MENU);		
 		delay(100);
+	}
+	for (BlinkTurn = 0; BlinkTurn < 3; BlinkTurn++) {
+		DisplayTurnMode(TURN_OFF);
+		delay(300);
+		DisplayTurnMode(TURN_ON);
+		delay(300);
 	}
 }
 
 void MenuTimeSelect(void) {
+	int BlinkTurn = 0;
+
 	/* Menu: Time text */
 	DisplayPrint("Escolha o", NO_CONTENT, "tempo!");
 	delay(3000);	
@@ -63,10 +93,14 @@ void MenuTimeSelect(void) {
 			}
 			delay(200);
 		}
-		else {
-			DisplayPrint("Tempo(min):", TimeSelect, NO_MENU);		
-		}
+		DisplayPrint("Tempo(min):", TimeSelect, NO_MENU);		
 		delay(100);
+	}
+	for (BlinkTurn = 0; BlinkTurn < 3; BlinkTurn++) {
+		DisplayTurnMode(TURN_OFF);
+		delay(300);
+		DisplayTurnMode(TURN_ON);
+		delay(300);
 	}
 
 	TimeSelect = TimeSelect * 60 * PERIODS_IN_SEC;			// Convert the selected time to cycles per second.
@@ -75,22 +109,13 @@ void MenuTimeSelect(void) {
 void MenuConfirm(void) {
 	/* Menu: Parameters confirmation */
 
-	int PrintTime;
-
-	DisplayPrint("Temperatura(C):", TemperatureSelect, NO_MENU);
-	delay(2000);
-
-	PrintTime = TimeSelect / (60 * PERIODS_IN_SEC);
-	DisplayPrint("Tempo(min):", PrintTime, NO_MENU);
-	delay(2000);
-
 	while (!ButtonVerification(BUTTON_NEXT)) {
 		DisplayPrint("Deseja", NO_CONTENT, "iniciar?");	
 		delay(200);
 	}
 }
 
-void ControlStart() {
+void ControlStart(void) {
 	float SensorTemperature;
 
 	ActuatorActivation(TURN_ON);							// Start the process.
@@ -99,13 +124,14 @@ void ControlStart() {
 		SensorTemperature = SensorRoutine();
 		DisplayPrint("Esquentando...", SensorTemperature, NO_MENU);	
 		delay(300);
+		SwitchInterrupt();
 	}
 
 	DisplayPrint("Temperatura", NO_CONTENT, "certa!" );	
 	delay(1500);
 }
 
-void ControlDisplayView() { 
+void ControlDisplayView(void) { 
 	float PrintTime, SensorTemperature;
 
 	if (ButtonVerification(BUTTON_NEXT)) {
@@ -130,8 +156,8 @@ void ControlDisplayView() {
 	}
 }
 
-void ControlProcess() {
-	if (SensorRoutine() >= TemperatureSelect) {
+void ControlProcess(void) {
+	if (SensorRoutine() >= (TemperatureSelect + ACCURACY_TEMPERATURE)) {
 		ActuatorActivation(TURN_OFF);
 	}
 	if (SensorRoutine() < TemperatureSelect)  {
@@ -139,15 +165,15 @@ void ControlProcess() {
 	}
 }
 
-void ControlSystemRun() {
+void ControlSystemRun(void) {
 
 	int ContentView = VIEW_TIME;
-
 	ControlStart();
 
 	while (TimeCounter <= TimeSelect) {
 		ControlDisplayView();
 		ControlProcess();
+		SwitchInterrupt();
 
 		TimeCounter++;
 		delay(PERIOD);
