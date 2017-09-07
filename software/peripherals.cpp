@@ -14,11 +14,12 @@ void SensorSetup(void) {
 }
 
 float SensorRoutine(void) {
-	int SensorRead;
+	int SensorRead_1, SensorRead_2;
 	float TemperatureC;
 
-	SensorRead = analogRead(SENSOR_PIN_1);				// Reads the sensor analogic value.
-	TemperatureC = SensorRead / SENSOR_CONVERTION;		// Converts the raw temperature to celcius.
+	SensorRead_1 = analogRead(SENSOR_PIN_1);			// Reads the sensor analogic value.
+	SensorRead_2 = analogRead(SENSOR_PIN_2);			// Reads the sensor analogic value.
+	TemperatureC = (SensorRead_1 + SensorRead_2) / (SENSOR_CONVERTION * 2);		// Converts the raw temperature to celcius.
 	
 	return TemperatureC;
 }

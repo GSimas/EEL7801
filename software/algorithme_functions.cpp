@@ -7,15 +7,17 @@
 
 #include "algorithme_functions.h"
 
-int TimeCounter = 0, TemperatureSelect = 25, TimeSelect = 5;
+int TimeCounter = 0, TemperatureSelect = DEFAULT_TEMPERATURE, TimeSelect = DEFAULT_TIME;
 int ContentView;
 
 /* Reset System */
 
+void(* resetFunc) (void) = 0;				// Declare reset function at address 0.
+
 void ResetSystemVariables(void) {
 	TimeCounter = 0;
-	TemperatureSelect = 25;
-	TimeSelect = 5;
+	TemperatureSelect = DEFAULT_TEMPERATURE;
+	TimeSelect = DEFAULT_TIME;
 }
 
 /* Switch Interrupt */
@@ -35,6 +37,8 @@ void SwitchInterrupt(void) {
 
 void MenuStart(void) {
 	/* Menu: Initialization */
+	while (!ButtonVerification(BUTTON_NEXT));		// Wait the button for start.
+
 	DisplayPrint("Bem vindo!", NO_CONTENT, NO_MENU);
 	delay(1500);
 }
@@ -70,6 +74,7 @@ void MenuTemperatureSelect(void) {
 		DisplayTurnMode(TURN_ON);
 		delay(300);
 	}
+	while (ButtonVerification(BUTTON_NEXT));				// Wait the button next.
 }
 
 void MenuTimeSelect(void) {
@@ -104,13 +109,26 @@ void MenuTimeSelect(void) {
 	}
 
 	TimeSelect = TimeSelect * 60 * PERIODS_IN_SEC;			// Convert the selected time to cycles per second.
+	while (ButtonVerification(BUTTON_NEXT));				// Wait the button next.
 }
 
 void MenuConfirm(void) {
 	/* Menu: Parameters confirmation */
 
-	while (!ButtonVerification(BUTTON_NEXT)) {
-		DisplayPrint("Deseja", NO_CONTENT, "iniciar?");	
+	while (1) {
+		DisplayPrint("Confirmando...", NO_CONTENT, "Voltar | Iniciar");	
+		if (ButtonVerification(BUTTON_MORE)) {
+			while (ButtonVerification(BUTTON_MORE));
+			break;
+		}
+		if (ButtonVerification(BUTTON_LESS)) {
+			while (ButtonVerification(BUTTON_LESS));
+			ResetSystemVariables();
+			MenuTemperatureSelect();						// Starts the temperature selection.
+			MenuTimeSelect();								// Starts the time selection.
+			MenuConfirm();									// Confirm before start.
+			break;
+		}
 		delay(200);
 	}
 }

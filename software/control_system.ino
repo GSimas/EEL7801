@@ -21,18 +21,14 @@ void setup() {
 void loop() {
 
 	ResetSystemVariables();
-	
-	while (!ButtonVerification(BUTTON_NEXT));		// Wait the button start.
-	MenuStart();									// Initializates the system.
+
+	MenuStart();									// Initializates the system (run only one time).
 
 	MenuTemperatureSelect();						// Starts the temperature selection.
-	while (ButtonVerification(BUTTON_NEXT));		// Wait the button next.
 
-	MenuTimeSelect();								// Starts the time selection.
-	while (ButtonVerification(BUTTON_NEXT));		
+	MenuTimeSelect();								// Starts the time selection.	
 
 	MenuConfirm();									// Confirm before start.
-	while (ButtonVerification(BUTTON_NEXT));
 
 	ControlSystemRun();								// Run control loop.
 }
