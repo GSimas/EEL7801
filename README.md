@@ -24,20 +24,22 @@ eletrônica.
 
 - Python (3 ou superior)
 - Jupyter Notebook
-- Arduino
+- Arduino (arquivos .ino)
 
 **Lista de Tarefas**
 
 - [x] Bibliotecas e código de apresentação
 - [x] Componentes básicos (Arduino, relé, switch de contato, placa fenolite, ...)
-- [ ] Componentes adicionais (resistores, transistores, capacitores, ...)
-- [ ] Verificar e testar resistência (desmontar e consertar torradeira)
-- [ ] Decidir/Construir estrutura
-- [ ] Ajuste em código (sistema de controle, segurança)
-- [ ] Testes iniciais
+- [x] Decidir/Construir/Adaptar estrutura
+- [x] Verificar e testar resistência (desmontar e consertar torradeira)
+- [x] Componentes adicionais (resistores, transistores, capacitores, ...)
+- [ ] Arrumar emenda de resistência
+- [ ] Analisar sistema para controle (desligamento de transformador, relé)
+- [ ] Ajustes em código (sistema de controle, segurança)
 - [ ] Primeiro Protótipo
 - [ ] Confecção em PCB
 - [ ] Segundo Protótipo
+- [ ] Adaptações finais
 - [ ] Apresentação Final
 
 Referências:
