@@ -1,18 +1,19 @@
 /*
- * algorithme_functions.c
+ * algorithm_functions.c
  *
  *  Created on: 26 de ago de 2017
  *      Author: André
  */
 
-#include "algorithme_functions.h"
+#include "algorithm_functions.h"
 
 int TimeCounter = 0, TemperatureSelect = DEFAULT_TEMPERATURE, TimeSelect = DEFAULT_TIME;
 int ContentView;
 
-/* Reset System */
+/* Reset System (If necessary to use) 
 
 void(* resetFunc) (void) = 0;				// Declare reset function at address 0.
+*/
 
 void ResetSystemVariables(void) {
 	TimeCounter = 0;
@@ -36,6 +37,9 @@ void SwitchInterrupt(void) {
 /* Menu Functions */
 
 void MenuStart(void) {
+
+	ResetSystemVariables();
+
 	/* Menu: Initialization */
 	while (!ButtonVerification(BUTTON_NEXT));		// Wait the button for start.
 
@@ -52,13 +56,13 @@ void MenuTemperatureSelect(void) {
 
 	/* Menu: Temperature Select */
 	while (!ButtonVerification(BUTTON_NEXT)) {
-		if (ButtonVerification(BUTTON_MORE)) {
+		if (ButtonVerification(BUTTON_PLUS)) {
 			if (TemperatureSelect < SAFETY_TEMPERATURE) {
 				TemperatureSelect = TemperatureSelect + 5;
 			}
 			delay(200);
 		}
-		if (ButtonVerification(BUTTON_LESS)) {
+		if (ButtonVerification(BUTTON_MINUS)) {
 			if (TemperatureSelect > NULL) {
 				TemperatureSelect = TemperatureSelect - 5;
 			}
@@ -86,13 +90,13 @@ void MenuTimeSelect(void) {
 
 	/* Menu: Time Select */
 	while (!ButtonVerification(BUTTON_NEXT)) {
-		if (ButtonVerification(BUTTON_MORE)) {
+		if (ButtonVerification(BUTTON_PLUS)) {
 			if (TimeSelect < SAFETY_TIME) {
 				TimeSelect++;
 			}
 			delay(200);
 		}
-		if (ButtonVerification(BUTTON_LESS)) {
+		if (ButtonVerification(BUTTON_MINUS)) {
 			if (TimeSelect > 1) {
 				TimeSelect--;
 			}
@@ -117,12 +121,12 @@ void MenuConfirm(void) {
 
 	while (1) {
 		DisplayPrint("Confirmando...", NO_CONTENT, "Voltar | Iniciar");	
-		if (ButtonVerification(BUTTON_MORE)) {
-			while (ButtonVerification(BUTTON_MORE));
+		if (ButtonVerification(BUTTON_PLUS)) {
+			while (ButtonVerification(BUTTON_PLUS));
 			break;
 		}
-		if (ButtonVerification(BUTTON_LESS)) {
-			while (ButtonVerification(BUTTON_LESS));
+		if (ButtonVerification(BUTTON_MINUS)) {
+			while (ButtonVerification(BUTTON_MINUS));
 			ResetSystemVariables();
 			MenuTemperatureSelect();						// Starts the temperature selection.
 			MenuTimeSelect();								// Starts the time selection.
@@ -175,7 +179,7 @@ void ControlDisplayView(void) {
 }
 
 void ControlProcess(void) {
-	if (SensorRoutine() >= (TemperatureSelect + ACCURACY_TEMPERATURE)) {
+	if (SensorRoutine() >= (TemperatureSelect + RANGE_TEMPERATURE)) {
 		ActuatorActivation(TURN_OFF);
 	}
 	if (SensorRoutine() < TemperatureSelect)  {

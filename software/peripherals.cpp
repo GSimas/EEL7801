@@ -17,9 +17,9 @@ float SensorRoutine(void) {
 	int SensorRead_1, SensorRead_2;
 	float TemperatureC;
 
-	SensorRead_1 = analogRead(SENSOR_PIN_1);			// Reads the sensor analogic value.
-	SensorRead_2 = analogRead(SENSOR_PIN_2);			// Reads the sensor analogic value.
-	TemperatureC = (SensorRead_1 + SensorRead_2) / (SENSOR_CONVERTION * 2);		// Converts the raw temperature to celcius.
+	SensorRead_1 = analogRead(SENSOR_PIN_1);			// Read the sensor analogic value.
+	SensorRead_2 = analogRead(SENSOR_PIN_2);			
+	TemperatureC = (SensorRead_1 + SensorRead_2) / (SENSOR_CONVERTION * 2);		// Convert the raw temperature to celcius.
 	
 	return TemperatureC;
 }
@@ -30,7 +30,7 @@ float SensorRoutine(void) {
 LiquidCrystal DisplayLCD (DISPLAY_RS, DISPLAY_EN, DISPLAY_D4, DISPLAY_D5, DISPLAY_D6, DISPLAY_D7);
 
 void DisplaySetup(void) {
-	DisplayLCD.begin(16, 2);							// The display size, 2 lines and 16 columns.
+	DisplayLCD.begin(DISPLAY_LINE_LENGTH, DISPLAY_NUMBER_LINES);				// The display size, 2 lines and 16 columns.
 }
 
 void DisplayTurnMode(int TurnMode) {
@@ -49,29 +49,29 @@ void DisplayPrint(char Header[], float Content, char Menu[]) {
 
 	DisplayLCD.clear();
 
-	TextTab  = (16 - strlen(Header)) / 2;				// Calculates necessary tab to center the text.
+	TextTab  = (DISPLAY_LINE_LENGTH - strlen(Header)) / 2;						// Calculates necessary tab to center the text.
 
-	DisplayLCD.setCursor(TextTab, 0);					// Selects the First display line and gives a tab to the content.
-	DisplayLCD.print(Header);							// Prints the header.
+	DisplayLCD.setCursor(TextTab, 0);											// Selects the First display line and gives a tab to the content.
+	DisplayLCD.print(Header);													// Prints the header.
 	
 	if (Content >= NULL) {
-		DisplayLCD.setCursor(TextTab, 1);				// Second line.
-		DisplayLCD.print(Content);						// Print the content information.
+		DisplayLCD.setCursor(TextTab, 1);										// Second line.
+		DisplayLCD.print(Content);												// Print the content information.
 	}
 
 	if (strlen(Menu)) {
-		TextTab  = (16 - strlen(Menu)) / 2;				// Menu tab.
+		TextTab  = (DISPLAY_LINE_LENGTH - strlen(Menu)) / 2;					// Menu tab.
 
-		DisplayLCD.setCursor(TextTab, 1);				// Second line.
-		DisplayLCD.print(Menu);							// Print the content information.
+		DisplayLCD.setCursor(TextTab, 1);										// Second line.
+		DisplayLCD.print(Menu);													// Print the content information.
 	}
 }
 
 /* Button Functions */
 
 void ButtonSetup(void) {
-	pinMode(BUTTON_MORE, INPUT);
-	pinMode(BUTTON_LESS, INPUT);
+	pinMode(BUTTON_PLUS, INPUT);
+	pinMode(BUTTON_MINUS, INPUT);
 	pinMode(BUTTON_NEXT, INPUT);
 	pinMode(SWITCH, INPUT);
 }
@@ -82,10 +82,10 @@ int ButtonVerification(int PushedButton) {
 	ButtonState = digitalRead(PushedButton);
 
 	if (ButtonState == HIGH){ 
-		ButtonVerification = 1;		
+		ButtonVerification = PUSHED;		
 	}
 	else { 
-		ButtonVerification = 0;
+		ButtonVerification = NOT_PUSHED;
 	}
 
 	return ButtonVerification;

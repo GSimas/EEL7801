@@ -5,11 +5,10 @@
  *      Author: André
  */
 
-#include "abstraction_layer.h"
+#include "hardware_abstraction.h"
 #include "peripherals.h"
-#include "algorithme_functions.h"
+#include "algorithm_functions.h"
 
-// Setup routine
 void setup() {
 	SensorSetup();
 	DisplaySetup();
@@ -17,19 +16,16 @@ void setup() {
 	ActuatorSetup();
 }
 
-// Loop routine
 void loop() {
 
-	ResetSystemVariables();
+	MenuStart();						// Initializate the system (Introduction).
 
-	MenuStart();									// Initializates the system (run only one time).
+	MenuTemperatureSelect();			// Start the temperature selection.
 
-	MenuTemperatureSelect();						// Starts the temperature selection.
+	MenuTimeSelect();					// Start the time selection.	
 
-	MenuTimeSelect();								// Starts the time selection.	
+	MenuConfirm();						// Confirm before start for actualy initializate or select the variables again.
 
-	MenuConfirm();									// Confirm before start.
-
-	ControlSystemRun();								// Run control loop.
+	ControlSystemRun();					// Verificate and control the temperature in a loop.
 }
 
