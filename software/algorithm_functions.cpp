@@ -12,7 +12,7 @@ int ContentView;
 
 /* Reset System (If necessary to use) 
 
-void(* resetFunc) (void) = 0;				// Declare reset function at address 0.
+void(* resetFunc) (void) = 0;								// Declare reset function at address 0.
 */
 
 void ResetSystemVariables(void) {
@@ -24,9 +24,9 @@ void ResetSystemVariables(void) {
 /* Switch Interrupt */
 
 void SwitchInterrupt(void) {
-	while(ButtonVerification(SWITCH)) {		// Switch open.
-		ActuatorActivation(TURN_OFF);		// Actuator off for security.
-		DisplayTurnMode(TURN_OFF);			
+	while(ButtonVerification(SWITCH)) {						// Switch open.
+		ActuatorActivation(TURN_OFF);						// Actuator off for security.
+		DisplayTurnMode(TURN_OFF);							// Indicate that the switch is not open.
 	}
 	DisplayTurnMode(TURN_ON);
 	if (SensorRoutine() < TemperatureSelect){
@@ -41,7 +41,7 @@ void MenuStart(void) {
 	ResetSystemVariables();
 
 	/* Menu: Initialization */
-	while (!ButtonVerification(BUTTON_NEXT));		// Wait the button for start.
+	while (!ButtonVerification(BUTTON_NEXT));				// Wait the button for start.
 
 	DisplayPrint("Bem vindo!", NO_CONTENT, NO_MENU);
 	delay(1500);
@@ -55,7 +55,7 @@ void MenuTemperatureSelect(void) {
 	delay(3000);	
 
 	/* Menu: Temperature Select */
-	while (!ButtonVerification(BUTTON_NEXT)) {
+	while (!ButtonVerification(BUTTON_NEXT)) {				// Loop to refresh the display and verify the button state.
 		if (ButtonVerification(BUTTON_PLUS)) {
 			if (TemperatureSelect < SAFETY_TEMPERATURE) {
 				TemperatureSelect = TemperatureSelect + 5;
@@ -72,7 +72,7 @@ void MenuTemperatureSelect(void) {
 		DisplayPrint("Temperatura(C):", TemperatureSelect, NO_MENU);		
 		delay(100);
 	}
-	for (BlinkTurn = 0; BlinkTurn < 3; BlinkTurn++) {
+	for (BlinkTurn = 0; BlinkTurn < 3; BlinkTurn++) {		// Loop to indicate the chosen value.
 		DisplayTurnMode(TURN_OFF);
 		delay(300);
 		DisplayTurnMode(TURN_ON);
@@ -81,7 +81,7 @@ void MenuTemperatureSelect(void) {
 	while (ButtonVerification(BUTTON_NEXT));				// Wait the button next.
 }
 
-void MenuTimeSelect(void) {
+void MenuTimeSelect(void) {									// Similar to the MenuTemperatureSelect().
 	int BlinkTurn = 0;
 
 	/* Menu: Time text */
@@ -156,7 +156,7 @@ void ControlStart(void) {
 void ControlDisplayView(void) { 
 	float PrintTime, SensorTemperature;
 
-	if (ButtonVerification(BUTTON_NEXT)) {
+	if (ButtonVerification(BUTTON_NEXT)) {					// Switch the view mode of the display.
 		switch (ContentView) {
 			case VIEW_TIME:
 				ContentView = VIEW_TEMPERATURE;
@@ -168,11 +168,11 @@ void ControlDisplayView(void) {
 		}
 	}
 
-	if (ContentView == VIEW_TEMPERATURE) {
+	if (ContentView == VIEW_TEMPERATURE) {					// Temperatura view mode.
 		SensorTemperature = SensorRoutine();
 		DisplayPrint("Temperatura(C):", SensorTemperature, NO_MENU);
 	}
-	if (ContentView == VIEW_TIME) {
+	if (ContentView == VIEW_TIME) {							// Time view mode.
 		PrintTime = (TimeSelect - TimeCounter) / (60 * PERIODS_IN_SEC);
 		DisplayPrint("Tempo Restante:", PrintTime, NO_MENU);	
 	}
@@ -192,8 +192,8 @@ void ControlSystemRun(void) {
 	int ContentView = VIEW_TIME;
 	ControlStart();
 
-	while (TimeCounter <= TimeSelect) {
-		ControlDisplayView();
+	while (TimeCounter <= TimeSelect) {						// Loop routine for control the actuator.
+		ControlDisplayView();							
 		ControlProcess();
 		SwitchInterrupt();
 
