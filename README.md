@@ -6,6 +6,8 @@ that you cannot have success. Then
 you work out the **how** and then the
 **what**...” - **Camille Kokozaki**
 
+**Website do Repositório:** [EEL7801](https://gsimas.github.io/EEL7801/)
+
 **Curso**: [Engenharia Eletrônica](http://cagr.sistemas.ufsc.br/relatorios/curriculoCurso?curso=235) - Universidade Federal de Santa Catarina ([UFSC](ufsc.br)), Florianópolis, SC, Brasil
 
 **Ementa**: Desenvolver habilidades de trabalho em equipe e de auto-aprendizagem a partir da solução de
@@ -33,18 +35,22 @@ eletrônica.
 - [x] Decidir/Construir/Adaptar estrutura
 - [x] Verificar e testar resistência (desmontar e consertar torradeira)
 - [x] Componentes adicionais (resistores, transistores, capacitores, ...)
-- [ ] Arrumar emenda de resistência
+- [x] Arrumar emenda de resistência
+- [x] Verificar e consertar problema de contato com malha de terra
 - [ ] Analisar sistema para controle (desligamento de transformador, relé)
 - [ ] Ajustes em código (sistema de controle, segurança)
-- [ ] Primeiro Protótipo
+- [ ] **Primeiro Protótipo (05/10)**
 - [ ] Confecção em PCB
-- [ ] Segundo Protótipo
+- [ ] **Segundo Protótipo (09/11)**
 - [ ] Adaptações finais
-- [ ] Apresentação Final
+- [ ] **Terceiro Protótipo/Versão Definitiva (23/11)**
+- [ ] **Apresentação Final (30/11)**
 
 Referências:
 
 - [Prof. Fernando Rangel de Sousa](http://rangel.paginas.ufsc.br/)
 - [Empresa Júnior CONAQ](http://conaq.com.br/)
+- [Minhas Engenhocas](https://minhasengenhocas.wordpress.com/)
+- [Prof. Aldo von Wangenheim](http://www.inf.ufsc.br/~aldo.vw/)
 
 ![UFSC](http://laship.ufsc.br/site/wp-content/themes/emc_completo/resource/img/filiacoes/brasao_UFSC_vertical_sigla.png) ![CTC](http://tisc.com.br/wp-content/uploads/ctcufsc.gif)
