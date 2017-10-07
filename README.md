@@ -37,13 +37,19 @@ eletrônica.
 - [x] Componentes adicionais (resistores, transistores, capacitores, ...)
 - [x] Arrumar emenda de resistência
 - [x] Verificar e consertar problema de contato com malha de terra
-- [ ] Analisar sistema para controle (desligamento de transformador, relé)
-- [ ] Ajustes em código (sistema de controle, segurança)
-- [ ] **Primeiro Protótipo (05/10)**
+- [ ] Analisar sistema para controle (~~desligamento de transformador~~, relé)
+- [x] Ajustes em código (sistema de controle, segurança)
+- [x] **Primeiro Protótipo (05/10)**
+- [ ] Aquisição de materiais adicionais (fita kapton, placa de mica, jumpers, dobradiça)
 - [ ] Confecção em PCB
+- [ ] Integração fonte celular + PCB desenvolvida + placa torradeira
+- [ ] Inserção do Display LCD na estrutura da torradeira
+- [ ] Posicionamento dos sensores de temperatura
 - [ ] **Segundo Protótipo (09/11)**
-- [ ] Adaptações finais
+- [ ] Adaptações e testes finais (validação)
 - [ ] **Terceiro Protótipo/Versão Definitiva (23/11)**
+- [ ] Finalização do site
+- [ ] Documentação (Tutorial - usuário e desenvolvedor)
 - [ ] **Apresentação Final (30/11)**
 
 Referências:
