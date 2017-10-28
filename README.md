@@ -16,6 +16,8 @@ eletrônica.
 
 **Horas-Aula:** 54
 
+**Nome do Projeto**: P.A.L.O.M.A. (Projeto de Aquecedor Local Operado por Microcontrolador ATMEGA)
+
 **Integrantes do Grupo**:
 
 - [André Martins Pio de Mattos](https://github.com/andrempmattos)
@@ -40,9 +42,10 @@ eletrônica.
 - [x] Analisar sistema para controle (~~desligamento de transformador~~, relé)
 - [x] Ajustes em código (sistema de controle, segurança)
 - [x] **Primeiro Protótipo (05/10)**
-- [ ] Aquisição de materiais adicionais (fita kapton, placa de mica, jumpers, dobradiça)
+- [x] Aquisição de materiais adicionais (fita kapton, placa de mica, jumpers, dobradiça)
 - [x] Confecção em PCB / Placa padrão com ilhas
 - [x] Troca de placa de mica danificada
+- [x] Troca de componentes danificados (ATMEGA, 7805, LED)
 - [ ] Ajustes na placa da torradeira (relé, botão cancela bobina, separação controle/aquecimento)
 - [ ] Integração fonte celular (9V / 12V) + PCB desenvolvida + placa torradeira
 - [ ] Inserção do Display LCD na estrutura da torradeira
