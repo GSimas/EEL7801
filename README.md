@@ -46,11 +46,14 @@ eletrônica.
 - [x] Confecção em PCB / Placa padrão com ilhas
 - [x] Troca de placa de mica danificada
 - [x] Troca de componentes danificados (ATMEGA, 7805, LED)
-- [ ] Ajustes na placa da torradeira (relé, botão cancela bobina, separação controle/aquecimento)
-- [ ] Integração fonte celular (9V / 12V) + PCB desenvolvida + placa torradeira
+- [x] Ajustes na placa da torradeira (relé, botão cancela bobina, separação controle/aquecimento)
+- [x] Integração fonte celular (9V / 12V) + PCB desenvolvida + placa torradeira
+- [ ] Pintar Tampa, posicionar switch
 - [ ] Inserção do Display LCD na estrutura da torradeira
-- [ ] Posicionamento dos sensores de temperatura
+- [x] Posicionamento do 1º sensor de temperatura
 - [ ] **Segundo Protótipo (09/11)**
+- [ ] Posicionamento do 2º sensor de temperatura
+- [ ] Modificações código (funções não-recursivas, timer)
 - [ ] Adaptações e testes finais (validação)
 - [ ] **Terceiro Protótipo/Versão Definitiva (23/11)**
 - [ ] Documentação (Tutorial - usuário e desenvolvedor)
