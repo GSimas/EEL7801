@@ -18,16 +18,17 @@ float SensorRoutine(void) {
 	float TemperatureC;
 
 	SensorRead_1 = analogRead(SENSOR_PIN_1);			// Read the sensor analogic value.
-	SensorRead_2 = analogRead(SENSOR_PIN_2);			
-	TemperatureC = (SensorRead_1 + SensorRead_2) / (SENSOR_CONVERTION * 2);		// Convert the raw temperature to celcius.
-	
+	//SensorRead_2 = analogRead(SENSOR_PIN_2);			
+	//TemperatureC = (SensorRead_1 + SensorRead_2) / (SENSOR_CONVERTION * 2);		// Convert the raw temperature to celcius.
+	TemperatureC = SensorRead_1 / SENSOR_CONVERTION;
+
 	return TemperatureC;
 }
 
 /* Display Functions */
 
 // Setup the display comunication pins.
-LiquidCrystal DisplayLCD (DISPLAY_RS, DISPLAY_EN, DISPLAY_D4, DISPLAY_D5, DISPLAY_D6, DISPLAY_D7);
+LiquidCrystal DisplayLCD (DISPLAY_RST, DISPLAY_EN, DISPLAY_D4, DISPLAY_D5, DISPLAY_D6, DISPLAY_D7);
 
 void DisplaySetup(void) {
 	DisplayLCD.begin(DISPLAY_LINE_LENGTH, DISPLAY_NUMBER_LINES);				// The display size, 2 lines and 16 columns.
@@ -54,7 +55,7 @@ void DisplayPrint(char Header[], float Content, char Menu[]) {
 	DisplayLCD.setCursor(TextTab, 0);											// Selects the First display line and gives a tab to the content.
 	DisplayLCD.print(Header);													// Prints the header.
 	
-	if (Content >= NULL) {
+	if (Content >= 0) {
 		DisplayLCD.setCursor(TextTab, 1);										// Second line.
 		DisplayLCD.print(Content);												// Print the content information.
 	}
@@ -81,7 +82,7 @@ int ButtonVerification(int PushedButton) {
 
 	ButtonState = digitalRead(PushedButton);
 
-	if (ButtonState == HIGH){ 
+	if (ButtonState == LOW){ 
 		ButtonVerification = PUSHED;		
 	}
 	else { 
@@ -94,14 +95,25 @@ int ButtonVerification(int PushedButton) {
 /* Actuator Functions */
 
 void ActuatorSetup(void) {
-	pinMode(ACTUATOR, OUTPUT);
+	pinMode(ACTUATOR_RELAY, OUTPUT);
+	pinMode(ACTUATOR_INDUCTOR, OUTPUT);
 }
 
-void ActuatorActivation(int TurnMode) {
-	if (TurnMode) {
-		digitalWrite(ACTUATOR, HIGH);	
+void ActuatorActivation(int TurnMode, int ActuatorSelection) {
+	if(ActuatorSelection == ACTUATOR_RELAY){
+		if (TurnMode) {
+			digitalWrite(ACTUATOR_RELAY, HIGH);	
+		}
+		else {
+			digitalWrite(ACTUATOR_RELAY, LOW);		
+		}
 	}
-	else {
-		digitalWrite(ACTUATOR, LOW);		
+	else{
+		if (TurnMode) {
+			digitalWrite(ACTUATOR_INDUCTOR, HIGH);	
+		}
+		else {
+			digitalWrite(ACTUATOR_INDUCTOR, LOW);		
+		}
 	}
 }

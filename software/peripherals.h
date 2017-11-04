@@ -86,6 +86,6 @@ void ActuatorSetup(void);
  * This send a sign HIGH or LOW to the actuator pin for turn on or off.
  * Parameter: (TurnMode) On or off.
  */
-void ActuatorActivation(int TurnMode);
+void ActuatorActivation(int TurnMode, int ActuatorSelection);
 
 #endif /* PERIPHERALS_H_ */

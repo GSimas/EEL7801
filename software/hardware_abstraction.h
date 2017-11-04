@@ -11,8 +11,8 @@
 /* Pins abstraction */
 
 // Use 2 temperature sensors to get more accuracy values.
-#define SENSOR_PIN_1		0
-#define SENSOR_PIN_2		1
+#define SENSOR_PIN_1		A0
+#define SENSOR_PIN_2		A1
 
 // Interface display pins.
 #define DISPLAY_RST			12
@@ -31,6 +31,8 @@
 #define SWITCH				10
 
 // Actuator control pin
-#define ACTUATOR			8
+#define ACTUATOR_RELAY		0
+#define ACTUATOR_INDUCTOR   1
+ 
 
 #endif /* HARDWARE_ABSTRACTION_LAYER_H_ */
