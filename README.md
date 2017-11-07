@@ -48,11 +48,14 @@ eletrônica.
 - [x] Troca de componentes danificados (ATMEGA, 7805, LED)
 - [x] Ajustes na placa da torradeira (relé, botão cancela bobina, separação controle/aquecimento)
 - [x] Integração fonte celular (9V / 12V) + PCB desenvolvida + placa torradeira
-- [ ] Pintar Tampa, posicionar switch
-- [ ] Inserção do Display LCD na estrutura da torradeira
+- [x] Pintar Tampa, posicionar switch
+- [x] Inserção do Display LCD na estrutura da torradeira
 - [x] Posicionamento do 1º sensor de temperatura
 - [ ] **Segundo Protótipo (09/11)**
 - [ ] Posicionamento do 2º sensor de temperatura
+- [ ] Fixar alavanca para não atingir placa frontal
+- [ ] Ajustar resistores para contraste do Display
+- [ ] Aplicar fita Kapton em partes restantes para isolamento
 - [ ] Modificações código (funções não-recursivas, timer)
 - [ ] Adaptações e testes finais (validação)
 - [ ] **Terceiro Protótipo/Versão Definitiva (23/11)**
