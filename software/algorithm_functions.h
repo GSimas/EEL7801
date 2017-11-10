@@ -13,17 +13,33 @@
 #include "hardware_abstraction.h"
 #include "peripherals.h"
 
+extern int ConfirmFlag;
+
 #define VIEW_TIME				0
 #define VIEW_TEMPERATURE		1
 
-#define DEFAULT_TEMPERATURE		25
+#define DEFAULT_TEMPERATURE		50
 #define DEFAULT_TIME			5
-#define RANGE_TEMPERATURE		3.0
+#define RANGE_TEMPERATURE		1.0
 #define SAFETY_TEMPERATURE		110
-#define SAFETY_TIME				45
+#define SAFETY_TIME				30
+
+#define VALUE_CHANGED			1
+#define VALUE_NOT_CHANGED		0
+#define NOT_CONFIRMED			1
+#define CONFIRMED				0
+
+#define DELAY_PERIOD_WELCOME	1500
+#define DELAY_PERIOD_SELECTION	3000
+#define DELAY_PERIOD_DEBOUNCER	200
+#define DELAY_PERIOD_BLINK		300
+#define DELAY_PERIOD_CONTROL	1500
+#define DELAY_PERIOD_END		5000
 
 #define PERIOD					300
 #define PERIODS_IN_SEC			(1000.0 / PERIOD)			// 1 second
+
+#define RESET_PRESSED_TIME		(PERIODS_IN_SEC * 7.0)
 
 /*
  * Function: ResetSystemVariables(void)

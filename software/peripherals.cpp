@@ -14,13 +14,13 @@ void SensorSetup(void) {
 }
 
 float SensorRoutine(void) {
-	int SensorRead_1, SensorRead_2;
+	int SensorReadUp, SensorReadDown;
 	float TemperatureC;
 
-	SensorRead_1 = analogRead(SENSOR_PIN_1);			// Read the sensor analogic value.
-	//SensorRead_2 = analogRead(SENSOR_PIN_2);			
-	//TemperatureC = (SensorRead_1 + SensorRead_2) / (SENSOR_CONVERTION * 2);		// Convert the raw temperature to celcius.
-	TemperatureC = SensorRead_1 / SENSOR_CONVERTION;
+	SensorReadUp = analogRead(SENSOR_PIN_UP);			// Read the sensor analogic value.
+	//SensorReadDown = analogRead(SENSOR_PIN_DOWN);			
+	//TemperatureC = ((SensorReadUp*0.25) + (SensorReadDown*0.75) / SENSOR_CONVERTION;	// Convert the raw temperature to celcius.
+	TemperatureC = SensorReadUp / SENSOR_CONVERTION;
 
 	return TemperatureC;
 }
@@ -45,7 +45,7 @@ void DisplayTurnMode(int TurnMode) {
 	}
 }
 
-void DisplayPrint(char Header[], float Content, char Menu[]) {	
+void DisplayPrint(const char Header[], float Content, const char Menu[]) {	
 	int TextTab; 
 
 	DisplayLCD.clear();
@@ -117,3 +117,25 @@ void ActuatorActivation(int TurnMode, int ActuatorSelection) {
 		}
 	}
 }
+
+void LEDDebugSetup(void) {
+	pinMode(DEBUG_LED, OUTPUT);
+}
+
+void LEDDebugBlink(int BlinkFrequency) {
+	float BlinkPeriod;
+
+	if (BlinkFrequency < 5) {
+		digitalWrite(DEBUG_LED, HIGH);
+	}
+	else {
+		BlinkPeriod = 1000 / BlinkFrequency;
+		digitalWrite(DEBUG_LED, HIGH);	
+		delay(BlinkPeriod);
+		digitalWrite(DEBUG_LED, LOW);
+		delay(BlinkPeriod);
+	} 
+}
+
+
+

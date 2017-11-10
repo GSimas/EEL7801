@@ -59,7 +59,7 @@ void DisplayTurnMode(int TurnMode);
  * Parameters: (Header and Menu) Used to pass text data. 
  * 			   (Content) Pass numeric values.
  */
-void DisplayPrint(char Header[], float Content, char Menu[]);
+void DisplayPrint(const char Header[], float Content, const char Menu[]);
 
 /*
  * Function: ButtonSetup(void)
@@ -87,5 +87,18 @@ void ActuatorSetup(void);
  * Parameter: (TurnMode) On or off.
  */
 void ActuatorActivation(int TurnMode, int ActuatorSelection);
+
+/*
+ * Function: ActuatorSetup(void)
+ * Set the Debug LED pin as digital output.
+ */
+void LEDDebugSetup(void);
+
+/*
+ * Function: LEDDebugBlink(int BlinkFrequency)
+ * Blink the blue Debug LED
+ * Parameter: (BlinkFrequency).
+ */
+void LEDDebugBlink(int BlinkFrequency);
 
 #endif /* PERIPHERALS_H_ */
