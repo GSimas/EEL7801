@@ -10,6 +10,7 @@
 
 #include <Arduino.h>
 #include <string.h>
+#include <stdio.h>
 #include "hardware_abstraction.h"
 #include "peripherals.h"
 
@@ -36,7 +37,7 @@ extern int ConfirmFlag;
 #define DELAY_PERIOD_CONTROL	1500
 #define DELAY_PERIOD_END		5000
 
-#define PERIOD					300
+#define PERIOD					200
 #define PERIODS_IN_SEC			(1000.0 / PERIOD)			// 1 second
 
 #define RESET_PRESSED_TIME		(PERIODS_IN_SEC * 7.0)

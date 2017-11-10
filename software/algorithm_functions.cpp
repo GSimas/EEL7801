@@ -128,7 +128,7 @@ void MenuTimeSelect(void) {									// Similar to the MenuTemperatureSelect().
 		delay(DELAY_PERIOD_BLINK);
 	}
 
-	TimeSelect = TimeSelect * 60 * PERIODS_IN_SEC;			// Convert the selected time to cycles per second.
+	TimeSelect = TimeSelect * 60;							// Convertion to seconds.
 	while (ButtonVerification(BUTTON_NEXT));				// Wait the button next.
 }
 
@@ -169,7 +169,8 @@ void ControlStart(void) {
 }
 
 void ControlDisplayView(void) { 
-	float PrintTime, SensorTemperature;
+	int PrintTimeRaw, PrintTimeSeconds, SensorTemperature, PrintTimeMinutes;
+	char PrintTimeString[5];
 
 	if (ButtonVerification(BUTTON_NEXT)) {					// Switch the view mode of the Display.
 		switch (ContentView) {
@@ -188,8 +189,12 @@ void ControlDisplayView(void) {
 		DisplayPrint("Temperatura(C):", SensorTemperature, NO_MENU);
 	}
 	if (ContentView == VIEW_TIME) {							// Time view mode.
-		PrintTime = (TimeSelect - TimeCounter) / (60 * PERIODS_IN_SEC);
-		DisplayPrint("Tempo Restante:", PrintTime, NO_MENU);	
+		PrintTimeRaw = TimeSelect - TimeCounter;			// Countdown.
+		PrintTimeMinutes = PrintTimeRaw / 60.0;
+		PrintTimeSeconds = PrintTimeRaw % 60;
+		sprintf(PrintTimeString, "%d:%d", PrintTimeMinutes, PrintTimeSeconds);
+
+		DisplayPrint("Tempo Restante:", NO_CONTENT, PrintTimeString);	
 	}
 }
 
@@ -206,10 +211,12 @@ void ControlProcess(void) {
 
 void ControlSystemRun(void) {
 
-	int ContentView = VIEW_TIME;
-	int ResetCounter = 0;
+	int ContentView = VIEW_TIME, ResetCounter = 0;
+	long StartControlTime = 0, EndTurnTime = 0;
 
 	ControlStart();
+
+	StartControlTime = millis();
 
 	while (TimeCounter <= TimeSelect) {						// Loop routine for control the actuator.
 		if (ButtonVerification(BUTTON_NEXT)){				// Reset with continuos pressed button start.
@@ -223,8 +230,10 @@ void ControlSystemRun(void) {
 		ControlProcess();
 		//SwitchInterrupt();
 
-		TimeCounter++;
 		delay(PERIOD);
+
+		EndTurnTime = millis();
+		TimeCounter = (EndTurnTime - StartControlTime) / 1000;	// Convertion to seconds
 	}
 
 	ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
