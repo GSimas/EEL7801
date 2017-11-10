@@ -30,17 +30,17 @@ extern int ConfirmFlag;
 #define NOT_CONFIRMED			1
 #define CONFIRMED				0
 
-#define DELAY_PERIOD_WELCOME	1500
+#define DELAY_PERIOD_WELCOME	2500
 #define DELAY_PERIOD_SELECTION	3000
 #define DELAY_PERIOD_DEBOUNCER	200
-#define DELAY_PERIOD_BLINK		300
+#define DELAY_PERIOD_BLINK		350
 #define DELAY_PERIOD_CONTROL	1500
 #define DELAY_PERIOD_END		5000
 
 #define PERIOD					200
 #define PERIODS_IN_SEC			(1000.0 / PERIOD)			// 1 second
 
-#define RESET_PRESSED_TIME		(PERIODS_IN_SEC * 7.0)
+#define RESET_PRESSED_TIME		(PERIODS_IN_SEC * 5.0)
 
 /*
  * Function: ResetSystemVariables(void)

@@ -57,6 +57,7 @@ void MenuTemperatureSelect(void) {
 	/* Menu: Temperature text */
 	DisplayPrint("Escolha a", NO_CONTENT, "temperatura!");
 	delay(DELAY_PERIOD_SELECTION);	
+	DisplayPrint("Temperatura(C):", TemperatureSelect, NO_MENU);
 
 	/* Menu: Temperature Select */
 	while (!ButtonVerification(BUTTON_NEXT)) {				// Loop to refresh the Display and verify the button state.
@@ -97,6 +98,7 @@ void MenuTimeSelect(void) {									// Similar to the MenuTemperatureSelect().
 	/* Menu: Time text */
 	DisplayPrint("Escolha o", NO_CONTENT, "tempo!");
 	delay(DELAY_PERIOD_SELECTION);	
+	DisplayPrint("Tempo(min):", TimeSelect, NO_MENU);
 
 	/* Menu: Time Select */
 	while (!ButtonVerification(BUTTON_NEXT)) {
@@ -134,8 +136,9 @@ void MenuTimeSelect(void) {									// Similar to the MenuTemperatureSelect().
 
 void MenuConfirm(void) {
 	/* Menu: Parameters confirmation */
-	while (1) {
-		DisplayPrint("Confirmando...", NO_CONTENT, "Voltar | Iniciar");	
+	DisplayPrint("Confirmando...", NO_CONTENT, "Voltar | Iniciar");
+
+	while (1) {	
 		if (ButtonVerification(BUTTON_PLUS)) {
 			while (ButtonVerification(BUTTON_PLUS));
 			ConfirmFlag = CONFIRMED;
@@ -169,7 +172,8 @@ void ControlStart(void) {
 }
 
 void ControlDisplayView(void) { 
-	int PrintTimeRaw, PrintTimeSeconds, SensorTemperature, PrintTimeMinutes;
+	int PrintTimeRaw, PrintTimeSeconds, PrintTimeMinutes;
+	float SensorTemperature;
 	char PrintTimeString[5];
 
 	if (ButtonVerification(BUTTON_NEXT)) {					// Switch the view mode of the Display.
@@ -192,8 +196,12 @@ void ControlDisplayView(void) {
 		PrintTimeRaw = TimeSelect - TimeCounter;			// Countdown.
 		PrintTimeMinutes = PrintTimeRaw / 60.0;
 		PrintTimeSeconds = PrintTimeRaw % 60;
-		sprintf(PrintTimeString, "%d:%d", PrintTimeMinutes, PrintTimeSeconds);
-
+		if (PrintTimeSeconds < 10){
+			sprintf(PrintTimeString, "%d:0%d", PrintTimeMinutes, PrintTimeSeconds);
+		}
+		else {
+			sprintf(PrintTimeString, "%d:%d", PrintTimeMinutes, PrintTimeSeconds);
+		}
 		DisplayPrint("Tempo Restante:", NO_CONTENT, PrintTimeString);	
 	}
 }
@@ -219,11 +227,11 @@ void ControlSystemRun(void) {
 	StartControlTime = millis();
 
 	while (TimeCounter <= TimeSelect) {						// Loop routine for control the actuator.
-		if (ButtonVerification(BUTTON_NEXT)){				// Reset with continuos pressed button start.
+		if (ButtonVerification(BUTTON_MINUS)){				
 			ResetCounter++;
-			if (ResetCounter >= RESET_PRESSED_TIME) {
-				resetFunc();
-			}
+		}
+		if (ResetCounter >= RESET_PRESSED_TIME) {			// Reset with continuos pressed button start.
+			resetFunc();
 		}
 
 		ControlDisplayView();							
