@@ -16,33 +16,46 @@
 
 extern int ConfirmFlag;
 
-#define VIEW_TIME				0
-#define VIEW_TEMPERATURE		1
+#define VIEW_TIME					0
+#define VIEW_TEMPERATURE			1
 
-#define DEFAULT_TEMPERATURE		50
-#define DEFAULT_TIME			5
-#define RANGE_TEMPERATURE		1.0
-#define SAFETY_TEMPERATURE		110
-#define SAFETY_TIME				30
+#define DEFAULT_TEMPERATURE			50
+#define DEFAULT_TIME				5
+#define RANGE_TEMPERATURE			1.0
+#define SAFETY_TEMPERATURE			110
+#define SAFETY_TIME					30
+#define LOG_DATA_SIZE				((SAFETY_TIME * 6) + 15)	// ((SAFETY_TIME * SecondsConvertion) + CoolingTime)
+#define COLD_HOLDER					40
 
-#define VALUE_CHANGED			1
-#define VALUE_NOT_CHANGED		0
-#define NOT_CONFIRMED			1
-#define CONFIRMED				0
-#define DISPLAY_MODE_NORMAL		1
-#define DISPLAY_MODE_CHANGE 	0
+#define VALUE_CHANGED				1
+#define VALUE_NOT_CHANGED			0
+#define NOT_CONFIRMED				1
+#define CONFIRMED					0
+#define DISPLAY_MODE_NORMAL			1
+#define DISPLAY_MODE_CHANGE 		0
 
-#define DELAY_PERIOD_WELCOME	2500
-#define DELAY_PERIOD_SELECTION	3000
-#define DELAY_PERIOD_DEBOUNCER	200
-#define DELAY_PERIOD_BLINK		350
-#define DELAY_PERIOD_CONTROL	1500
-#define DELAY_PERIOD_END		5000
+#define LOG_TEMPERATURE_AVERAGE		0
+#define LOG_TEMPERATURE_MAXIMUM		1
+#define LOG_TEMPERATURE_MINIMUM		2
+#define LOG_TIME_TOTAL_ACTUAL		3
+#define LOG_TIME_HEATING			4
+#define LOG_TIME_COOLING			5
+#define LOG_INTERRUPTION_TOTAL_TIME	6	
+#define LOG_INTERRUPTION_NUMBER		7
+#define LOG_COLLECTED_DATA			8		
 
-#define PERIOD					200
-#define PERIODS_IN_SEC			(1000.0 / PERIOD)			// 1 second
+#define DELAY_PERIOD_WELCOME		2500
+#define DELAY_PERIOD_SELECTION		3000
+#define DELAY_PERIOD_DEBOUNCER		200
+#define DELAY_PERIOD_BLINK			350
+#define DELAY_PERIOD_CONTROL		1500
+#define DELAY_PERIOD_LOG			3000
 
-#define RESET_PRESSED_TIME		(PERIODS_IN_SEC * 5.0)
+#define PERIOD						200
+#define PERIODS_IN_SEC				(1000 / PERIOD)			// 1 second. WARNING! Use only integer numbers to avoid truncation
+
+#define RESET_PRESSED_TIME			(PERIODS_IN_SEC * 5)
+#define DATA_COLLECT_RATE			(PERIODS_IN_SEC * 10)
 
 /*
  * Function: ResetSystemVariables(void)
@@ -98,6 +111,13 @@ void ControlStart(void);
 void ControlDisplayView(void);
 
 /*
+ * Function: ControlProcessDynamicChange(void)
+ * This function adds the possibility of choosing the parameters 
+ * again in the middle of the process.
+ */
+void ControlProcessDynamicChange(void);
+
+/*
  * Function: ControlProcess(void)
  * This keep the teperature at the user choice turning on or off
  * the actuator. 
@@ -110,5 +130,17 @@ void ControlProcess(void);
  * control of the temperature. 
  */
 void ControlSystemRun(void);
+
+/*
+ * Function: LogOverview(void)
+ * This show the data colleted (log) in a menu 
+ */
+void LogOverview(void);
+
+/*
+ * Function: LogRefresh(void)
+ * This refresh the data colleted 
+ */
+void LogRefresh(void);
 
 #endif /* ALGORITHM_FUNCTIONS_H_ */

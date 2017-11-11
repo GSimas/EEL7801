@@ -31,5 +31,7 @@ void loop() {
 		MenuConfirm();					// Confirm before start for actualy initializate or select the variables again.
 	}
 	ControlSystemRun();					// Verificate and control the temperature in a loop.
+
+	LogOverview();						// Collect all the data and show in the display.
 }
 
