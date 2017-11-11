@@ -13,11 +13,12 @@ long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
 
 float LogAvarageTemperature, LogMaximumTemperature, LogMinimumTemperature;
 int LogTotalTime, LogHeatingTime = 0, LogCoolingTime = 0, LogInterruptionTime = 0, LogInterruptionNumber = 0;
-float ColletedData[LOG_DATA_SIZE];
+float CollectedData[LOG_DATA_SIZE];
 
-long LogAuxiliaryTimeStart = 0;
+long LogCoolingTimeStart = 0;
 int AuxiliaryCounterData = 0;
 float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
+long LogInterruptTimeStart, LogInterruptTimeEnd;
 
 /* Reset Microcontroller */ 
 
@@ -36,18 +37,17 @@ void ResetSystemVariables(void) {
 /* Switch Interrupt */
 
 void SwitchInterrupt(void) {
-	long LogAuxiliaryTimeStart, LogAuxiliaryTimeEnd;
 
 	LogInterruptionNumber++;
-	LogAuxiliaryTimeStart = millis();
+	LogInterruptTimeStart = millis();
 
 	while(ButtonVerification(SWITCH)) {						// Switch open.
 		ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);		// Actuator Relay off for security.
 		DisplayTurnMode(TURN_OFF);							// Indicate that the switch is not open.
 	}
 
-	LogAuxiliaryTimeEnd = millis();		
-	LogInterruptionTime = LogAuxiliaryTimeEnd - LogAuxiliaryTimeStart;
+	LogInterruptTimeEnd = millis();		
+	LogInterruptionTime = LogInterruptionTime + ((LogInterruptTimeEnd - LogInterruptTimeStart) / 1000);
 
 	DisplayTurnMode(TURN_ON);
 	if (SensorRoutine() < TemperatureSelect){
@@ -62,7 +62,7 @@ void MenuStart(void) {
 	/* Initialization */
 	int AuxiliaryCounter;
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
-		ColletedData[AuxiliaryCounter];
+		CollectedData[AuxiliaryCounter] = 0;
 	}
 
 	ResetSystemVariables();
@@ -186,13 +186,13 @@ void MenuConfirm(void) {
 
 void ControlStart(void) {
 	float SensorTemperature;
-	long LogAuxiliaryTimeStart = 0, LogAuxiliaryTimeEnd = 0;
+	long LogHeatingTimeStart = 0, LogHeatingTimeEnd = 0;
 	int DataCollectCounter = 0, DataCollectMod = 0, DisplayCounter = 0, DisplayMod = 0;
 
 	ActuatorActivation(TURN_ON, ACTUATOR_RELAY);			// Start the process.
 
 	LogMaximumTemperatureBuffer = SensorRoutine();
-	LogAuxiliaryTimeStart = millis();
+	LogHeatingTimeStart = millis();
 
 	while (SensorRoutine() < TemperatureSelect) {
 		SensorTemperature = SensorRoutine();
@@ -201,15 +201,15 @@ void ControlStart(void) {
 			LogMaximumTemperatureBuffer = SensorTemperature;
 		}
 
-		DisplayMod = DisplayCounter++ % 10;
-		if (DisplayCounter == 0) {
+		DisplayMod = DisplayCounter++ % (PERIODS_IN_SEC * 2);
+		if (DisplayMod == 0) {
 			DisplayPrint("Esquentando...", SensorTemperature, NO_MENU);
 		}
 		//SwitchInterrupt();
 
 		DataCollectMod = DataCollectCounter++ % DATA_COLLECT_RATE;
 		if (DataCollectMod == 0) {
-			ColletedData[AuxiliaryCounterData++] = SensorRoutine(); 		
+			CollectedData[AuxiliaryCounterData++] = SensorRoutine(); 		
 		}
 		LEDDebugBlink(TURN_ON);								// Blink LED Debug
 		delay(PERIOD);
@@ -217,8 +217,8 @@ void ControlStart(void) {
 	}
 
 	LogMinimumTemperatureBuffer = SensorRoutine();
-	LogAuxiliaryTimeEnd = millis();
-	LogHeatingTime = LogAuxiliaryTimeEnd - LogAuxiliaryTimeStart;
+	LogHeatingTimeEnd = millis();
+	LogHeatingTime = (LogHeatingTimeEnd - LogHeatingTimeStart) / 1000;
 
 	DisplayPrint("Temperatura", NO_CONTENT, "certa!" );	
 	delay(DELAY_PERIOD_CONTROL);
@@ -278,6 +278,7 @@ void ControlProcess(void) {
 void ControlSystemRun(void) {
 
 	int ResetCounter = 0, DataCollectCounter = 0;
+	int DisplayCounter = 0, DisplayMod = 0, DataCollectMod = 0;
 	long StartControlTime = 0, EndTurnTime = 0;
 
 	LogMaximumTemperatureBuffer = SensorRoutine();
@@ -289,6 +290,10 @@ void ControlSystemRun(void) {
 		/* Reset with continuos button minus pressed */
 		if (ButtonVerification(BUTTON_MINUS)){				
 			ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
+			
+			LogInterruptionNumber++;
+			LogInterruptTimeStart = millis();	
+
 			while(ButtonVerification(BUTTON_MINUS)) {
 				ResetCounter++;
 				delay(PERIOD);
@@ -296,6 +301,10 @@ void ControlSystemRun(void) {
 			if (ResetCounter >= RESET_PRESSED_TIME) {
 				resetFunc();	
 			}
+			ResetCounter = 0;
+
+			LogInterruptTimeEnd = millis();		
+			LogInterruptionTime = LogInterruptionTime + ((LogInterruptTimeEnd - LogInterruptTimeStart) / 1000);
 		}
 
 		/* Dynamic temperature change with button plus */
@@ -303,7 +312,14 @@ void ControlSystemRun(void) {
 			StartRestoreTime = millis();
 			ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
 			while(ButtonVerification(BUTTON_PLUS));
+			
+			LogInterruptionNumber++;
+			LogInterruptTimeStart = millis();	
+
 			ControlProcessDynamicChange();
+
+			LogInterruptTimeEnd = millis();		
+			LogInterruptionTime = LogInterruptionTime + ((LogInterruptTimeEnd - LogInterruptTimeStart) / 1000);
 		}
 
 		/* Show a different content with the button next */
@@ -315,28 +331,39 @@ void ControlSystemRun(void) {
 				ContentViewFlag = VIEW_TEMPERATURE;
 			}
 		}
-		ControlDisplayView();
+
+		/* Avoid flickering on display and blink debug LED */
+		DisplayMod = DisplayCounter++ % PERIODS_IN_SEC;
+		if (DisplayMod == 0) {
+			ControlDisplayView();
+			LEDDebugBlink(TURN_ON);								// Blink LED Debug
+		}
 
 		ControlProcess();
 		//SwitchInterrupt();
 
-		LEDDebugBlink(TURN_ON);									// Blink LED Debug
 		delay(PERIOD);
-		LEDDebugBlink(TURN_OFF);								// Blink LED Debug
+
+		/* Debug LED Blink purpouse */
+		DisplayMod = DisplayCounter % (PERIODS_IN_SEC * 2);
+		if (DisplayMod == 0) {
+			LEDDebugBlink(TURN_OFF);							// Blink LED Debug
+		}
 
 		EndTurnTime = millis();
 		TimeCounter = ((EndTurnTime - StartControlTime) - RestoreTime) / 1000;	// Convertion to seconds, normaly RestoreTime = 0.
 
 		/* Collect the temperature during the process*/
-		if (DataCollectCounter++ >= DATA_COLLECT_RATE) {
-			ColletedData[AuxiliaryCounterData++] = SensorRoutine(); 		
+		DataCollectMod = DataCollectCounter++ % DATA_COLLECT_RATE;
+		if (DataCollectMod) {
+			CollectedData[AuxiliaryCounterData++] = SensorRoutine(); 		
 		}
 	}
 
 	ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
 	ActuatorActivation(TURN_OFF, ACTUATOR_INDUCTOR);
 
-	LogAuxiliaryTimeStart = millis();
+	LogCoolingTimeStart = millis();
 
 	DisplayPrint("Finalizado com", NO_CONTENT, "sucesso!");
 	while (!ButtonVerification(BUTTON_NEXT));
@@ -346,15 +373,16 @@ void ControlSystemRun(void) {
 
 void LogRefresh(void) {
 	float AuxiliaryTemperature;
-	long LogAuxiliaryTimeEnd = 0;
-	int AuxiliaryCounter;
+	long LogCoolingTimeEnd = 0;
+	int AuxiliaryCounter, ActualDataSize = 0;
 
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
-		if (ColletedData[AuxiliaryCounter] > 0) {
-			AuxiliaryTemperature =+ ColletedData[AuxiliaryCounter];
+		if (CollectedData[AuxiliaryCounter] > 0) {
+			AuxiliaryTemperature =+ CollectedData[AuxiliaryCounter];
+			ActualDataSize++;
 		}
 	}
-	LogAvarageTemperature = AuxiliaryTemperature/ (AuxiliaryCounter + 1);
+	LogAvarageTemperature = AuxiliaryTemperature/ ActualDataSize;
 	
 	LogMaximumTemperature = LogMaximumTemperatureBuffer;
 	LogMinimumTemperature = LogMinimumTemperatureBuffer;
@@ -362,19 +390,28 @@ void LogRefresh(void) {
 	LogTotalTime = TimeCounter;
 
 	if (SensorRoutine() <= COLD_HOLDER){
-		LogAuxiliaryTimeEnd = millis();		
-		LogCoolingTime = LogAuxiliaryTimeEnd - LogAuxiliaryTimeStart;
+		LogCoolingTimeEnd = millis();		
+		LogCoolingTime = (LogCoolingTimeEnd - LogCoolingTimeStart) / 1000;
 	} 
 }
 
 void LogOverview(void) {
-	int LogOverviewMode = 0, LogMaxLength, DisplayFlag;
+	int LogOverviewMode = 0, LogMaxLength, DisplayFlag, AuxiliaryCounter;
 	char PrintData[13];
+	int TimeBaseVector[LOG_DATA_SIZE];
+
+	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
+		TimeBaseVector[AuxiliaryCounter] = 10 * AuxiliaryCounter;
+	}
 
 	LogMaxLength = LOG_DATA_SIZE + 8;
 
 	DisplayPrint("Resultados:", NO_CONTENT, NO_MENU);
 	delay(DELAY_PERIOD_LOG);
+
+	/* Show the content at the first time */
+	LogRefresh();
+	DisplayPrint("Temp. media(C):", LogAvarageTemperature, NO_MENU);
 
 	while (!ButtonVerification(BUTTON_NEXT)) {
 		LogRefresh();
@@ -406,16 +443,16 @@ void LogOverview(void) {
 					DisplayPrint("Temp. min.(C):", LogMinimumTemperature, NO_MENU);
 					break;
 				case LOG_TIME_TOTAL_ACTUAL:
-					DisplayPrint("Tempo tot.(min):", LogTotalTime, NO_MENU);
+					DisplayPrint("Tempo tot.(s):", LogTotalTime, NO_MENU);
 					break;
 				case LOG_TIME_HEATING:
-					DisplayPrint("Tempo aqc.(min):", LogHeatingTime, NO_MENU);
+					DisplayPrint("Tempo aqc.(s):", LogHeatingTime, NO_MENU);
 					break;
 				case LOG_TIME_COOLING:
-					DisplayPrint("Tempo rsf.(min):", LogCoolingTime, NO_MENU);
+					DisplayPrint("Tempo rsf.(s):", LogCoolingTime, NO_MENU);
 					break;
 				case LOG_INTERRUPTION_TOTAL_TIME:
-					DisplayPrint("Tempo int.(min):", LogInterruptionTime, NO_MENU);
+					DisplayPrint("Tempo int.(s):", LogInterruptionTime, NO_MENU);
 					break;
 				case LOG_INTERRUPTION_NUMBER:
 					DisplayPrint("interrup. numb.:", LogInterruptionNumber, NO_MENU);
@@ -424,8 +461,8 @@ void LogOverview(void) {
 			}
 
 			if (LogOverviewMode >= LOG_COLLECTED_DATA) {
-				if (ColletedData[LogOverviewMode-8] != 0) {
-					sprintf(PrintData, "%f | %d", ColletedData[LogOverviewMode-8], TimeCounter);
+				if (CollectedData[LogOverviewMode-8] != 0) {
+					sprintf(PrintData, "%d | %d", (int)CollectedData[LogOverviewMode-8], TimeBaseVector[LogOverviewMode-8]);
 					DisplayPrint("Temp.x Tempo(s):", NO_CONTENT, PrintData);
 				}
 			}
