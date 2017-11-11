@@ -25,6 +25,7 @@ extern int ConfirmFlag;
 #define SAFETY_TEMPERATURE			110
 #define SAFETY_TIME					30
 #define LOG_DATA_SIZE				(SAFETY_TIME * 6)
+#define COLD_HOLDER					40
 
 #define VALUE_CHANGED				1
 #define VALUE_NOT_CHANGED			0
@@ -134,5 +135,11 @@ void ControlSystemRun(void);
  * This show the data colleted (log) in a menu 
  */
 void LogOverview(void);
+
+/*
+ * Function: LogRefresh(void)
+ * This refresh the data colleted 
+ */
+void LogRefresh(void);
 
 #endif /* ALGORITHM_FUNCTIONS_H_ */

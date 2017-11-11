@@ -13,8 +13,9 @@ long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
 float ColletedData[LOG_DATA_SIZE];
 
 float LogAvarageTemperature, LogMaximumTemperature, LogMinimumTemperature;
-int LogTotalTime, LogHeatingTime, LogCoolingTime, LogInterruptionTime, LogInterruptionNumber;
+int LogTotalTime, LogHeatingTime = 0, LogCoolingTime = 0, LogInterruptionTime = 0, LogInterruptionNumber = 0;
 
+float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
 
 /* Reset Microcontroller */ 
 
@@ -33,10 +34,19 @@ void ResetSystemVariables(void) {
 /* Switch Interrupt */
 
 void SwitchInterrupt(void) {
+	long LogAuxiliaryTimeStart, LogAuxiliaryTimeEnd;
+
+	LogInterruptionNumber++;
+	LogAuxiliaryTimeStart = millis();
+
 	while(ButtonVerification(SWITCH)) {						// Switch open.
 		ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);		// Actuator Relay off for security.
 		DisplayTurnMode(TURN_OFF);							// Indicate that the switch is not open.
 	}
+
+	LogAuxiliaryTimeEnd = millis();		
+	LogInterruptionTime = LogAuxiliaryTimeEnd - LogAuxiliaryTimeStart;
+
 	DisplayTurnMode(TURN_ON);
 	if (SensorRoutine() < TemperatureSelect){
 		ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
@@ -58,6 +68,7 @@ void MenuStart(void) {
 	/* Menu: Initialization */
 	while (!ButtonVerification(BUTTON_NEXT));				// Wait the button for start.
 
+	LEDDebugBlink(5);										// Blink LED Debug 5 times per second
 	DisplayPrint("Bem vindo!", NO_CONTENT, "P.A.L.O.M.A");
 	ActuatorActivation(TURN_ON, ACTUATOR_INDUCTOR);
 	delay(DELAY_PERIOD_WELCOME);
@@ -65,6 +76,8 @@ void MenuStart(void) {
 
 void MenuTemperatureSelect(void) {
 	int DisplayFlag = VALUE_NOT_CHANGED, BlinkTurn = 0;
+
+	LEDDebugBlink(0);										// Turn on LED Debug
 
 	/* Menu: Temperature text */
 	DisplayPrint("Escolha a", NO_CONTENT, "temperatura!");
@@ -106,6 +119,8 @@ void MenuTemperatureSelect(void) {
 
 void MenuTimeSelect(void) {									// Similar to the MenuTemperatureSelect().
 	int DisplayFlag = VALUE_NOT_CHANGED, BlinkTurn = 0;
+
+	LEDDebugBlink(0);
 
 	/* Menu: Time text */
 	DisplayPrint("Escolha o", NO_CONTENT, "tempo!");
@@ -169,15 +184,28 @@ void MenuConfirm(void) {
 
 void ControlStart(void) {
 	float SensorTemperature;
+	long LogAuxiliaryTimeStart = 0, LogAuxiliaryTimeEnd = 0;
 
 	ActuatorActivation(TURN_ON, ACTUATOR_RELAY);			// Start the process.
 
+	LogMaximumTemperatureBuffer = SensorRoutine();
+	LogAuxiliaryTimeStart = millis();
+
 	while (SensorRoutine() < TemperatureSelect) {
 		SensorTemperature = SensorRoutine();
+
+		if (LogMaximumTemperatureBuffer < SensorTemperature) {
+			LogMaximumTemperatureBuffer = SensorTemperature;
+		}
+
 		DisplayPrint("Esquentando...", SensorTemperature, NO_MENU);
-		LEDDebugBlink(7);									// Blink Debug 7 times per second
+		LEDDebugBlink(7);									// Blink LED Debug 7 times per second
 		//SwitchInterrupt();
 	}
+
+	LogMinimumTemperatureBuffer = SensorRoutine();
+	LogAuxiliaryTimeEnd = millis();
+	LogHeatingTime = LogAuxiliaryTimeEnd - LogAuxiliaryTimeStart;
 
 	DisplayPrint("Temperatura", NO_CONTENT, "certa!" );	
 	delay(DELAY_PERIOD_CONTROL);
@@ -215,12 +243,23 @@ void ControlProcessDynamicChange(void) {
 }
 
 void ControlProcess(void) {
-	LEDDebugBlink(5);										// Blink Debug 5 times per second
+	float CurrentTemperature;
+	
+	LEDDebugBlink(5);										// Blink LED Debug 5 times per second
 
-	if (SensorRoutine() >= (TemperatureSelect + RANGE_TEMPERATURE)) {
+	CurrentTemperature = SensorRoutine();
+
+	if (LogMaximumTemperatureBuffer < CurrentTemperature) {
+		LogMaximumTemperatureBuffer = CurrentTemperature;
+	}
+	if (LogMinimumTemperatureBuffer > CurrentTemperature) {
+		LogMinimumTemperatureBuffer = CurrentTemperature;
+	}
+
+	if (CurrentTemperature >= (TemperatureSelect + RANGE_TEMPERATURE)) {
 		ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
 	}
-	if (SensorRoutine() < TemperatureSelect)  {
+	if (CurrentTemperature < TemperatureSelect)  {
 		ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
 	}
 }
@@ -230,6 +269,7 @@ void ControlSystemRun(void) {
 	int ResetCounter = 0;
 	long StartControlTime = 0, EndTurnTime = 0;
 
+	LogMaximumTemperatureBuffer = SensorRoutine();
 	ControlStart();
 
 	StartControlTime = millis();
@@ -284,6 +324,29 @@ void ControlSystemRun(void) {
 
 /* Log Functions */
 
+void LogRefresh(void) {
+	int AuxiliaryCounter, ActualDataSize = 0;
+	float AuxiliaryTemperature;
+	long LogAuxiliaryTimeStart = 0, LogAuxiliaryTimeEnd = 0; 
+
+	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
+		if (ColletedData[AuxiliaryCounter] > 0) {
+			AuxiliaryTemperature =+ ColletedData[AuxiliaryCounter];
+			ActualDataSize++;
+		}
+	}
+	LogAvarageTemperature = AuxiliaryTemperature/ ActualDataSize;
+	LogMaximumTemperature = LogMaximumTemperatureBuffer;
+	LogMinimumTemperature = LogMinimumTemperatureBuffer;
+	LogTotalTime = TimeCounter;
+
+	LogAuxiliaryTimeStart = millis();
+	if (SensorRoutine() <= COLD_HOLDER){
+		LogAuxiliaryTimeEnd = millis();		
+		LogCoolingTime = LogAuxiliaryTimeEnd - LogAuxiliaryTimeStart;
+	} 
+}
+
 void LogOverview(void) {
 	int LogOverviewMode = 0, LogMaxLength, DisplayFlag;
 	char PrintData[13];
@@ -294,6 +357,8 @@ void LogOverview(void) {
 	delay(DELAY_PERIOD_LOG);
 
 	while (!ButtonVerification(BUTTON_NEXT)) {
+		LogRefresh();
+
 		if (ButtonVerification(BUTTON_PLUS)) {
 			DisplayFlag = VALUE_CHANGED;
 			if (LogOverviewMode < LogMaxLength) {
@@ -352,5 +417,3 @@ void LogOverview(void) {
 	while(!ButtonVerification(BUTTON_NEXT));
 	resetFunc();
 }
-
-
