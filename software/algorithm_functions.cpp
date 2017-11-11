@@ -7,19 +7,20 @@
 
 #include "algorithm_functions.h"
 
-int TimeCounter = 0, TemperatureSelect = DEFAULT_TEMPERATURE, TimeSelect = DEFAULT_TIME;
+long TimeCounter = 0; 
+int TemperatureSelect = DEFAULT_TEMPERATURE, TimeSelect = DEFAULT_TIME;
 int ContentViewFlag = VIEW_TIME;
-long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
+unsigned long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
 
 float LogAvarageTemperature, LogMaximumTemperature, LogMinimumTemperature;
 int LogTotalTime, LogHeatingTime = 0, LogCoolingTime = 0, LogInterruptionTime = 0, LogInterruptionNumber = 0;
 float CollectedData[LOG_DATA_SIZE];
 
 int ActualDataSize = 0;
-long LogCoolingTimeStart = 0;
+unsigned long LogCoolingTimeStart = 0;
 int AuxiliaryCounterData = 0;
 float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
-long LogInterruptTimeStart, LogInterruptTimeEnd;
+unsigned long LogInterruptTimeStart, LogInterruptTimeEnd;
 
 /* Reset Microcontroller */ 
 
@@ -187,7 +188,7 @@ void MenuConfirm(void) {
 
 void ControlStart(void) {
 	float SensorTemperature;
-	long LogHeatingTimeStart = 0, LogHeatingTimeEnd = 0;
+	unsigned long LogHeatingTimeStart = 0, LogHeatingTimeEnd = 0;
 	int DataCollectCounterStart = 0, DataCollectModStart = 0, DisplayCounter = 0, DisplayMod = 0;
 
 	ActuatorActivation(TURN_ON, ACTUATOR_RELAY);			// Start the process.
@@ -220,6 +221,8 @@ void ControlStart(void) {
 	LogMinimumTemperatureBuffer = SensorRoutine();
 	LogHeatingTimeEnd = millis();
 	LogHeatingTime = (LogHeatingTimeEnd - LogHeatingTimeStart) / 1000;
+
+	LEDDebugBlink(TURN_ON);									// Blink LED Debug
 
 	DisplayPrint("Temperatura", NO_CONTENT, "certa!" );	
 	delay(DELAY_PERIOD_CONTROL);
@@ -280,7 +283,7 @@ void ControlSystemRun(void) {
 
 	int ResetCounter = 0, DataCollectCounter = 0;
 	int DisplayCounter = 0, DisplayMod = 0, DataCollectMod = 0;
-	long StartControlTime = 0, EndTurnTime = 0;
+	unsigned long StartControlTime = 0, EndTurnTime = 0;
 
 	LogMaximumTemperatureBuffer = SensorRoutine();
 	ControlStart();
@@ -288,6 +291,7 @@ void ControlSystemRun(void) {
 	StartControlTime = millis();
 
 	while (TimeCounter <= TimeSelect) {						// Loop routine for control the actuator.
+		
 		/* Reset with continuos button minus pressed */
 		if (ButtonVerification(BUTTON_MINUS)){				
 			ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
@@ -341,13 +345,12 @@ void ControlSystemRun(void) {
 
 		ControlProcess();
 		//SwitchInterrupt();
-		LEDDebugBlink(TURN_ON);								// Blink LED Debug
 
 		delay(PERIOD);
 
 		EndTurnTime = millis();
 		TimeCounter = ((EndTurnTime - StartControlTime) - RestoreTime) / 1000;	// Convertion to seconds, normaly RestoreTime = 0.
-
+	
 		/* Collect the temperature during the process*/
 		DataCollectMod = DataCollectCounter++ % DATA_COLLECT_RATE;
 		if (DataCollectMod) {
@@ -368,7 +371,7 @@ void ControlSystemRun(void) {
 
 void LogRefresh(void) {
 	float AuxiliaryTemperature;
-	long LogCoolingTimeEnd = 0;
+	unsigned long LogCoolingTimeEnd = 0;
 	int AuxiliaryCounter;
 
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
