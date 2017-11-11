@@ -24,7 +24,7 @@ extern int ConfirmFlag;
 #define RANGE_TEMPERATURE			1.0
 #define SAFETY_TEMPERATURE			110
 #define SAFETY_TIME					30
-#define LOG_DATA_SIZE				(SAFETY_TIME * 6)
+#define LOG_DATA_SIZE				((SAFETY_TIME * 6) + 15)	// ((SAFETY_TIME * SecondsConvertion) + CoolingTime)
 #define COLD_HOLDER					40
 
 #define VALUE_CHANGED				1
@@ -52,9 +52,10 @@ extern int ConfirmFlag;
 #define DELAY_PERIOD_LOG			3000
 
 #define PERIOD						200
-#define PERIODS_IN_SEC				(1000.0 / PERIOD)			// 1 second
+#define PERIODS_IN_SEC				(1000 / PERIOD)			// 1 second. WARNING! Use only integer numbers to avoid truncation
 
-#define RESET_PRESSED_TIME			(PERIODS_IN_SEC * 5.0)
+#define RESET_PRESSED_TIME			(PERIODS_IN_SEC * 5)
+#define DATA_COLLECT_RATE			(PERIODS_IN_SEC * 10)
 
 /*
  * Function: ResetSystemVariables(void)
