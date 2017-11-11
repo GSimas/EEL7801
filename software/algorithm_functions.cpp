@@ -15,6 +15,7 @@ float LogAvarageTemperature, LogMaximumTemperature, LogMinimumTemperature;
 int LogTotalTime, LogHeatingTime = 0, LogCoolingTime = 0, LogInterruptionTime = 0, LogInterruptionNumber = 0;
 float CollectedData[LOG_DATA_SIZE];
 
+int ActualDataSize = 0;
 long LogCoolingTimeStart = 0;
 int AuxiliaryCounterData = 0;
 float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
@@ -187,14 +188,14 @@ void MenuConfirm(void) {
 void ControlStart(void) {
 	float SensorTemperature;
 	long LogHeatingTimeStart = 0, LogHeatingTimeEnd = 0;
-	int DataCollectCounter = 0, DataCollectMod = 0, DisplayCounter = 0, DisplayMod = 0;
+	int DataCollectCounterStart = 0, DataCollectModStart = 0, DisplayCounter = 0, DisplayMod = 0;
 
 	ActuatorActivation(TURN_ON, ACTUATOR_RELAY);			// Start the process.
 
 	LogMaximumTemperatureBuffer = SensorRoutine();
 	LogHeatingTimeStart = millis();
 
-	while (SensorRoutine() < TemperatureSelect) {
+	while (SensorRoutine() < TemperatureSelect - RANGE_TEMPERATURE) {
 		SensorTemperature = SensorRoutine();
 
 		if (LogMaximumTemperatureBuffer < SensorTemperature) {
@@ -207,8 +208,8 @@ void ControlStart(void) {
 		}
 		//SwitchInterrupt();
 
-		DataCollectMod = DataCollectCounter++ % DATA_COLLECT_RATE;
-		if (DataCollectMod == 0) {
+		DataCollectModStart = DataCollectCounterStart++ % DATA_COLLECT_RATE;
+		if (DataCollectModStart == 0) {
 			CollectedData[AuxiliaryCounterData++] = SensorRoutine(); 		
 		}
 		LEDDebugBlink(TURN_ON);								// Blink LED Debug
@@ -336,19 +337,13 @@ void ControlSystemRun(void) {
 		DisplayMod = DisplayCounter++ % PERIODS_IN_SEC;
 		if (DisplayMod == 0) {
 			ControlDisplayView();
-			LEDDebugBlink(TURN_ON);								// Blink LED Debug
 		}
 
 		ControlProcess();
 		//SwitchInterrupt();
+		LEDDebugBlink(TURN_ON);								// Blink LED Debug
 
 		delay(PERIOD);
-
-		/* Debug LED Blink purpouse */
-		DisplayMod = DisplayCounter % (PERIODS_IN_SEC * 2);
-		if (DisplayMod == 0) {
-			LEDDebugBlink(TURN_OFF);							// Blink LED Debug
-		}
 
 		EndTurnTime = millis();
 		TimeCounter = ((EndTurnTime - StartControlTime) - RestoreTime) / 1000;	// Convertion to seconds, normaly RestoreTime = 0.
@@ -374,7 +369,7 @@ void ControlSystemRun(void) {
 void LogRefresh(void) {
 	float AuxiliaryTemperature;
 	long LogCoolingTimeEnd = 0;
-	int AuxiliaryCounter, ActualDataSize = 0;
+	int AuxiliaryCounter;
 
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
 		if (CollectedData[AuxiliaryCounter] > 0) {
@@ -460,8 +455,8 @@ void LogOverview(void) {
 				default: break;
 			}
 
-			if (LogOverviewMode >= LOG_COLLECTED_DATA) {
-				if (CollectedData[LogOverviewMode-8] != 0) {
+			if ((LogOverviewMode >= LOG_COLLECTED_DATA) && (LogOverviewMode <= (ActualDataSize + 8))) {
+				if (CollectedData[LogOverviewMode-8] > 0) {
 					sprintf(PrintData, "%d | %d", (int)CollectedData[LogOverviewMode-8], TimeBaseVector[LogOverviewMode-8]);
 					DisplayPrint("Temp.x Tempo(s):", NO_CONTENT, PrintData);
 				}
