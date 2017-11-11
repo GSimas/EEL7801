@@ -29,6 +29,8 @@ extern int ConfirmFlag;
 #define VALUE_NOT_CHANGED		0
 #define NOT_CONFIRMED			1
 #define CONFIRMED				0
+#define DISPLAY_MODE_NORMAL		1
+#define DISPLAY_MODE_CHANGE 	0
 
 #define DELAY_PERIOD_WELCOME	2500
 #define DELAY_PERIOD_SELECTION	3000

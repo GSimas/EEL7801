@@ -8,7 +8,8 @@
 #include "algorithm_functions.h"
 
 int TimeCounter = 0, TemperatureSelect = DEFAULT_TEMPERATURE, TimeSelect = DEFAULT_TIME;
-int ContentView;
+int ContentViewFlag = VIEW_TIME;
+long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
 
 /* Reset Microcontroller */ 
 
@@ -176,23 +177,11 @@ void ControlDisplayView(void) {
 	float SensorTemperature;
 	char PrintTimeString[5];
 
-	if (ButtonVerification(BUTTON_NEXT)) {					// Switch the view mode of the Display.
-		switch (ContentView) {
-			case VIEW_TIME:
-				ContentView = VIEW_TEMPERATURE;
-				break;
-			case VIEW_TEMPERATURE:
-				ContentView = VIEW_TIME;
-				break;
-			default: break;
-		}
-	}
-
-	if (ContentView == VIEW_TEMPERATURE) {					// Temperatura view mode.
+	if (ContentViewFlag == VIEW_TEMPERATURE) {					// Temperatura view mode.
 		SensorTemperature = SensorRoutine();
 		DisplayPrint("Temperatura(C):", SensorTemperature, NO_MENU);
 	}
-	if (ContentView == VIEW_TIME) {							// Time view mode.
+	if (ContentViewFlag == VIEW_TIME) {							// Time view mode.
 		PrintTimeRaw = TimeSelect - TimeCounter;			// Countdown.
 		PrintTimeMinutes = PrintTimeRaw / 60.0;
 		PrintTimeSeconds = PrintTimeRaw % 60;
@@ -204,6 +193,13 @@ void ControlDisplayView(void) {
 		}
 		DisplayPrint("Tempo Restante:", NO_CONTENT, PrintTimeString);	
 	}
+}
+
+void ControlProcessDynamicChange() {
+	MenuTemperatureSelect();
+	MenuTimeSelect();
+	EndRestoreTime = millis();
+	RestoreTime = RestoreTime + (EndRestoreTime - StartRestoreTime);
 }
 
 void ControlProcess(void) {
@@ -219,7 +215,7 @@ void ControlProcess(void) {
 
 void ControlSystemRun(void) {
 
-	int ContentView = VIEW_TIME, ResetCounter = 0;
+	int ResetCounter = 0;
 	long StartControlTime = 0, EndTurnTime = 0;
 
 	ControlStart();
@@ -227,21 +223,44 @@ void ControlSystemRun(void) {
 	StartControlTime = millis();
 
 	while (TimeCounter <= TimeSelect) {						// Loop routine for control the actuator.
+		/* Reset with continuos button minus pressed */
 		if (ButtonVerification(BUTTON_MINUS)){				
-			ResetCounter++;
-		}
-		if (ResetCounter >= RESET_PRESSED_TIME) {			// Reset with continuos pressed button start.
-			resetFunc();
+			ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
+			while(ButtonVerification(BUTTON_MINUS)) {
+				ResetCounter++;
+				delay(PERIOD);
+			}
+			if (ResetCounter >= RESET_PRESSED_TIME) {
+				resetFunc();	
+			}
 		}
 
-		ControlDisplayView();							
+		/* Dynamic temperature change with button plus */
+		if (ButtonVerification(BUTTON_PLUS)){
+			StartRestoreTime = millis();
+			ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
+			while(ButtonVerification(BUTTON_PLUS));
+			ControlProcessDynamicChange();
+		}
+
+		/* Show a different content with the button next */
+		if (ButtonVerification(BUTTON_NEXT)) {					// Switch the view mode of the Display.
+			if (ContentViewFlag == VIEW_TEMPERATURE) {
+				ContentViewFlag = VIEW_TIME;
+			}
+			else {
+				ContentViewFlag = VIEW_TEMPERATURE;
+			}
+		}
+		ControlDisplayView();
+
 		ControlProcess();
 		//SwitchInterrupt();
 
 		delay(PERIOD);
 
 		EndTurnTime = millis();
-		TimeCounter = (EndTurnTime - StartControlTime) / 1000;	// Convertion to seconds
+		TimeCounter = ((EndTurnTime - StartControlTime) - RestoreTime) / 1000;	// Convertion to seconds, normaly RestoreTime = 0.
 	}
 
 	ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
