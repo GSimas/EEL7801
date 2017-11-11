@@ -10,6 +10,11 @@
 int TimeCounter = 0, TemperatureSelect = DEFAULT_TEMPERATURE, TimeSelect = DEFAULT_TIME;
 int ContentViewFlag = VIEW_TIME;
 long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
+float ColletedData[LOG_DATA_SIZE];
+
+float LogAvarageTemperature, LogMaximumTemperature, LogMinimumTemperature;
+int LogTotalTime, LogHeatingTime, LogCoolingTime, LogInterruptionTime, LogInterruptionNumber;
+
 
 /* Reset Microcontroller */ 
 
@@ -41,6 +46,12 @@ void SwitchInterrupt(void) {
 /* Menu Functions */
 
 void MenuStart(void) {
+
+	/* Initialization */
+	int AuxiliaryCounter;
+	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
+		ColletedData[AuxiliaryCounter];
+	}
 
 	ResetSystemVariables();
 
@@ -195,7 +206,8 @@ void ControlDisplayView(void) {
 	}
 }
 
-void ControlProcessDynamicChange() {
+void ControlProcessDynamicChange(void) {
+	ResetSystemVariables();
 	MenuTemperatureSelect();
 	MenuTimeSelect();
 	EndRestoreTime = millis();
@@ -267,7 +279,78 @@ void ControlSystemRun(void) {
 	ActuatorActivation(TURN_OFF, ACTUATOR_INDUCTOR);
 
 	DisplayPrint("Finalizado com", NO_CONTENT, "sucesso!");
-	delay(DELAY_PERIOD_END);
+	while (!ButtonVerification(BUTTON_NEXT));
+}
+
+/* Log Functions */
+
+void LogOverview(void) {
+	int LogOverviewMode = 0, LogMaxLength, DisplayFlag;
+	char PrintData[13];
+
+	LogMaxLength = LOG_DATA_SIZE + 8;
+
+	DisplayPrint("Resultados:", NO_CONTENT, NO_MENU);
+	delay(DELAY_PERIOD_LOG);
+
+	while (!ButtonVerification(BUTTON_NEXT)) {
+		if (ButtonVerification(BUTTON_PLUS)) {
+			DisplayFlag = VALUE_CHANGED;
+			if (LogOverviewMode < LogMaxLength) {
+				LogOverviewMode++;
+			}
+			delay(DELAY_PERIOD_DEBOUNCER);
+		}
+		if (ButtonVerification(BUTTON_MINUS)) {
+			DisplayFlag = VALUE_CHANGED;
+			if (LogOverviewMode > 0) {
+				LogOverviewMode--;
+			}
+			delay(DELAY_PERIOD_DEBOUNCER);
+		}
+		
+		if (DisplayFlag) {									// If value changed print in the display.
+			switch (LogOverviewMode) {
+				case LOG_TEMPERATURE_AVERAGE:
+					DisplayPrint("Temp. media(C):", LogAvarageTemperature, NO_MENU);
+					break;
+				case LOG_TEMPERATURE_MAXIMUM:
+					DisplayPrint("Temp. max.(C):", LogMaximumTemperature, NO_MENU);
+					break;
+				case LOG_TEMPERATURE_MINIMUM:
+					DisplayPrint("Temp. min.(C):", LogMinimumTemperature, NO_MENU);
+					break;
+				case LOG_TIME_TOTAL_ACTUAL:
+					DisplayPrint("Tempo tot.(min):", LogTotalTime, NO_MENU);
+					break;
+				case LOG_TIME_HEATING:
+					DisplayPrint("Tempo aqc.(min):", LogHeatingTime, NO_MENU);
+					break;
+				case LOG_TIME_COOLING:
+					DisplayPrint("Tempo rsf.(min):", LogCoolingTime, NO_MENU);
+					break;
+				case LOG_INTERRUPTION_TOTAL_TIME:
+					DisplayPrint("Tempo int.(min):", LogInterruptionTime, NO_MENU);
+					break;
+				case LOG_INTERRUPTION_NUMBER:
+					DisplayPrint("interrup. numb.:", LogInterruptionNumber, NO_MENU);
+					break;
+				default: break;
+			}
+
+			if (LogOverviewMode >= LOG_COLLECTED_DATA) {
+				sprintf(PrintData, "%f | %d", ColletedData[LogOverviewMode-8], TimeCounter);
+				DisplayPrint("Temp.x Tempo(s):", NO_CONTENT, PrintData);
+			}
+			
+			DisplayFlag = VALUE_NOT_CHANGED;		
+		}
+		delay(DELAY_PERIOD_DEBOUNCER);
+	}
 
 	DisplayPrint("Deseja iniciar", NO_CONTENT, "novamente?");
+	while(!ButtonVerification(BUTTON_NEXT));
+	resetFunc();
 }
+
+
