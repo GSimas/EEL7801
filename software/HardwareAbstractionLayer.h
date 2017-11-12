@@ -1,11 +1,11 @@
 /*
- * hardware_abstraction.h
+ * HardwareAbstractionLayer.h
  *
  *  Created on: 21 de ago de 2017
  *      Author: André
  */
 
-#ifndef HARDWARE_ABSTRACTION_H_
+#ifndef HARDWARE_ABSTRACTION_LAYER_H_
 #define HARDWARE_ABSTRACTION_LAYER_H_
 
 /* Pins abstraction */

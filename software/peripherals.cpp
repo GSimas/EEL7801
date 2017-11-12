@@ -1,11 +1,11 @@
 /*
- * peripherals.cpp
+ * Peripherals.cpp
  *
  *  Created on: 25 de ago de 2017
  *      Author: André
  */
 
-#include "peripherals.h"
+#include "Peripherals.h"
 
 /* Sensor Functions */
 
