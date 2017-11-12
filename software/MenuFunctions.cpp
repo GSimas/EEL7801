@@ -9,11 +9,12 @@
 
 void MenuStart(void) {
 
-	/* Initialization */
+	/* Initialization 
 	int AuxiliaryCounter;
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
 		CollectedData[AuxiliaryCounter] = 0;
 	}
+	*/
 
 	ResetSystemVariables();
 

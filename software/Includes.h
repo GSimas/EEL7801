@@ -27,7 +27,7 @@
 #define SAFETY_TEMPERATURE			110
 #define SAFETY_TIME					30
 
-#define LOG_DATA_SIZE				((SAFETY_TIME * 4) + 15)	// ((SAFETY_TIME * SecondsConvertion) + CoolingTime)
+//#define LOG_DATA_SIZE				((10 * 4) + 15)	// ((SAFETY_TIME * SecondsConvertion) + CoolingTime)
 #define COLD_HOLDER					40	
 
 #define PERIOD						500

@@ -14,6 +14,7 @@ void LogRefresh(void) {
 	unsigned long LogCoolingTimeEnd = 0;
 	int AuxiliaryCounter;
 
+	/*
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < (LogMaxLength - 8); AuxiliaryCounter++) {
 		if (CollectedData[AuxiliaryCounter] > 0) {
 			AuxiliaryTemperature =+ CollectedData[AuxiliaryCounter];
@@ -21,7 +22,8 @@ void LogRefresh(void) {
 		}
 	}
 	LogAvarageTemperature = AuxiliaryTemperature / ActualDataSize;
-	
+	*/
+
 	LogMaximumTemperature = LogMaximumTemperatureBuffer;
 	LogMinimumTemperature = LogMinimumTemperatureBuffer;
 	
@@ -36,11 +38,14 @@ void LogRefresh(void) {
 void LogOverview(void) {
 	int LogOverviewMode = 0, DisplayFlag, AuxiliaryCounter, LogRefreshMod = 0, LogRefreshCounter = 0;
 	char PrintData[13];
+	/*
 	int TimeBaseVector[LOG_DATA_SIZE];
 
+	
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
 		TimeBaseVector[AuxiliaryCounter] = 15 * AuxiliaryCounter;
 	}
+	*/
 
 	LogMaxLength = (TimeCounter / 10) + 8;
 
@@ -101,13 +106,14 @@ void LogOverview(void) {
 					break;
 				default: break;
 			}
-
+			/*
 			if (LogOverviewMode >= LOG_COLLECTED_DATA) {
 				if (CollectedData[LogOverviewMode-8] > 0) {
 					sprintf(PrintData, "%d | %d", CollectedData[LogOverviewMode-8], TimeBaseVector[LogOverviewMode-8]);
 					DisplayPrint("Temp.x Tempo(s):", NO_CONTENT, PrintData);
 				}
 			}
+			*/
 			
 			DisplayFlag = VALUE_NOT_CHANGED;		
 		}

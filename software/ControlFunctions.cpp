@@ -39,11 +39,13 @@ void ControlStart(void) {
 			DisplayPrint("Esquentando...", SensorTemperature, NO_MENU);
 		}
 		//SwitchInterrupt();
-
+		
+		/*
 		DataCollectModStart = DataCollectCounterStart++ % DATA_COLLECT_RATE;
 		if (DataCollectModStart == 0) {
 			CollectedData[AuxiliaryCounterData++] = SensorRoutine(); 		
 		}
+		*/
 		LEDDebugBlink(TURN_ON);								// Blink LED Debug
 		delay(PERIOD);
 		LEDDebugBlink(TURN_OFF);							// Blink LED Debug
@@ -183,11 +185,12 @@ void ControlSystemRun(void) {
 		EndTurnTime = millis();
 		TimeCounter = ((EndTurnTime - StartControlTime) - RestoreTime) / 1000;	// Convertion to seconds, normaly RestoreTime = 0.
 	
-		/* Collect the temperature during the process*/
+		/* Collect the temperature during the process
 		DataCollectMod = DataCollectCounter++ % DATA_COLLECT_RATE;
 		if (DataCollectMod) {
 			CollectedData[AuxiliaryCounterData++] = SensorRoutine(); 		
 		}
+		*/
 	}
 
 	ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);

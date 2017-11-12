@@ -15,7 +15,7 @@ int TemperatureSelect = DEFAULT_TEMPERATURE, TimeSelect = DEFAULT_TIME;
 /* Log Variables*/
 float LogAvarageTemperature = 0, LogMaximumTemperature, LogMinimumTemperature;
 int LogTotalTime, LogHeatingTime = 0, LogCoolingTime = 0, LogInterruptionTime = 0, LogInterruptionNumber = 0;
-int CollectedData[LOG_DATA_SIZE];
+//int CollectedData[LOG_DATA_SIZE];
 unsigned long LogCoolingTimeStart = 0, LogInterruptTimeStart = 0, LogInterruptTimeEnd = 0;
 float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
 
