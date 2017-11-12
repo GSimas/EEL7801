@@ -18,7 +18,7 @@
 extern long TimeCounter;
 extern long LogAvarageTemperature, LogMaximumTemperature, LogMinimumTemperature;
 extern int LogTotalTime, LogHeatingTime, LogCoolingTime, LogInterruptionTime, LogInterruptionNumber;
-extern float CollectedData[LOG_DATA_SIZE];
+extern int CollectedData[LOG_DATA_SIZE];
 extern unsigned long LogCoolingTimeStart;
 extern float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
 

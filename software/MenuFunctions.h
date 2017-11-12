@@ -24,7 +24,7 @@ extern int ConfirmFlag;
 extern int TemperatureSelect;
 extern int TimeSelect;
 extern long TimeCounter;
-extern float CollectedData[LOG_DATA_SIZE];
+extern int CollectedData[LOG_DATA_SIZE];
 
 /*
  * Function: MenuStart(void)

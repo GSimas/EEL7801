@@ -100,7 +100,7 @@ void LogOverview(void) {
 
 			if ((LogOverviewMode >= LOG_COLLECTED_DATA) && (LogOverviewMode <= (ActualDataSize + 8))) {
 				if (CollectedData[LogOverviewMode-8] > 0) {
-					sprintf(PrintData, "%d | %d", (int)CollectedData[LogOverviewMode-8], TimeBaseVector[LogOverviewMode-8]);
+					sprintf(PrintData, "%d | %d", CollectedData[LogOverviewMode-8], TimeBaseVector[LogOverviewMode-8]);
 					DisplayPrint("Temp.x Tempo(s):", NO_CONTENT, PrintData);
 				}
 			}
