@@ -27,7 +27,7 @@ void ControlStart(void) {
 	LogMaximumTemperatureBuffer = SensorRoutine();
 	LogHeatingTimeStart = millis();
 
-	while (SensorRoutine() < TemperatureSelect - RANGE_TEMPERATURE) {
+	while (SensorRoutine() < TemperatureSelect + TEMPERATURE_START_RANGE) {
 		SensorTemperature = SensorRoutine();
 
 		if (LogMaximumTemperatureBuffer < SensorTemperature) {
@@ -49,6 +49,24 @@ void ControlStart(void) {
 		LEDDebugBlink(TURN_ON);								// Blink LED Debug
 		delay(PERIOD);
 		LEDDebugBlink(TURN_OFF);							// Blink LED Debug
+	}
+
+	while (SensorRoutine() < TemperatureSelect) {
+		DisplayMod = DisplayCounter++ % (PERIODS_IN_SEC * 2);
+		if (DisplayMod == 0) {
+			DisplayPrint("Esperando...", SensorTemperature, NO_MENU);
+		}
+
+		//SwitchInterrupt();
+
+		/*
+		DataCollectModStart = DataCollectCounterStart++ % DATA_COLLECT_RATE;
+		if (DataCollectModStart == 0) {
+			CollectedData[AuxiliaryCounterData++] = SensorRoutine(); 		
+		}
+		*/
+
+		delay(PERIOD);
 	}
 
 	LogMinimumTemperatureBuffer = SensorRoutine();
@@ -105,7 +123,7 @@ void ControlProcess(void) {
 		LogMinimumTemperatureBuffer = CurrentTemperature;
 	}
 
-	if (CurrentTemperature >= (TemperatureSelect + RANGE_TEMPERATURE)) {
+	if (CurrentTemperature >= (TemperatureSelect + CONTROL_RANGE_TEMPERATURE)) {
 		ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
 	}
 	if (CurrentTemperature < TemperatureSelect)  {
