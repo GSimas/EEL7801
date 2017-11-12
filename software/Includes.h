@@ -37,12 +37,6 @@
 #define DATA_COLLECT_RATE			(PERIODS_IN_SEC * 10)
 
 /*
- * Function: ResetFunc(void)
- * Reset the microcontroller. 
- */
-void(* resetFunc) (void) = 0;                // Declare reset function at address 0.
-
-/*
  * Function: ResetSystemVariables(void)
  * Back variables to their default values. 
  */

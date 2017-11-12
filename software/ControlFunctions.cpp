@@ -11,6 +11,12 @@ int AuxiliaryCounterData = 0;
 int ContentViewFlag = VIEW_TIME;
 unsigned long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
 
+/*
+ * Function: ResetFunc(void)
+ * Reset the microcontroller. 
+ */
+void(* resetFunc) (void) = 0;                // Declare reset function at address 0.
+
 void ControlStart(void) {
 	float SensorTemperature;
 	unsigned long LogHeatingTimeStart = 0, LogHeatingTimeEnd = 0;

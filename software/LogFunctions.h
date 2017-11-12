@@ -16,9 +16,14 @@
 #include "includes.h"
 
 extern long TimeCounter;
+extern long LogAvarageTemperature, LogMaximumTemperature, LogMinimumTemperature;
+extern int LogTotalTime, LogHeatingTime, LogCoolingTime, LogInterruptionTime, LogInterruptionNumber;
+extern float CollectedData[LOG_DATA_SIZE];
+extern unsigned long LogCoolingTimeStart;
+extern float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
 
 #define DELAY_PERIOD_LOG				3000
-#define DELAY_PERIOD_DEBOUNCER   		200
+#define DELAY_PERIOD_DEBOUNCER    		200
 
 #define LOG_TEMPERATURE_AVERAGE			0
 #define LOG_TEMPERATURE_MAXIMUM			1

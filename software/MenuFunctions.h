@@ -20,6 +20,12 @@
 #define DELAY_PERIOD_DEBOUNCER		200
 #define DELAY_PERIOD_BLINK			350
 
+extern int ConfirmFlag;
+extern int TemperatureSelect;
+extern int TimeSelect;
+extern long TimeCounter;
+extern float CollectedData[LOG_DATA_SIZE];
+
 /*
  * Function: MenuStart(void)
  * Initializate the system. 

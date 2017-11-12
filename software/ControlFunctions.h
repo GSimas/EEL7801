@@ -16,6 +16,14 @@
 #include "MenuFunctions.h"
 #include "includes.h"
 
+extern int TemperatureSelect;
+extern int TimeSelect;
+extern int LogHeatingTime, LogCoolingTime, LogInterruptionTime, LogInterruptionNumber;
+extern float CollectedData[LOG_DATA_SIZE];
+extern unsigned long LogCoolingTimeStart, LogInterruptTimeStart, LogInterruptTimeEnd;
+extern float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
+extern long TimeCounter;
+
 #define DELAY_PERIOD_CONTROL		1500
 
 #define VIEW_TIME					0

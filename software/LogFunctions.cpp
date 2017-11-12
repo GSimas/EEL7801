@@ -112,5 +112,4 @@ void LogOverview(void) {
 
 	DisplayPrint("Deseja iniciar", NO_CONTENT, "novamente?");
 	while(!ButtonVerification(BUTTON_NEXT));
-	resetFunc();
 }
