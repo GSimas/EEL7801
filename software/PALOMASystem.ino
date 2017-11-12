@@ -15,7 +15,7 @@ void setup() {
 }
 
 void loop() {
-	
+
 	MenuStart();						// Initializate the system (Introduction).
 
 	while (ConfirmFlag) {				// Verify confirm flag.
@@ -28,6 +28,6 @@ void loop() {
 
 	ControlSystemRun();					// Verificate and control the temperature in a loop.
 
-	//LogOverview();						// Collect all the data and show in the display.
+	LogOverview();						// Collect all the data and show in the display.
 }
 

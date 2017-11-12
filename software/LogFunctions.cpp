@@ -7,20 +7,20 @@
 
 #include "LogFunctions.h"
 
-int ActualDataSize = 0;
+int ActualDataSize = 0, LogMaxLength = 0;
 
 void LogRefresh(void) {
-	float AuxiliaryTemperature;
+	float AuxiliaryTemperature = 0;
 	unsigned long LogCoolingTimeEnd = 0;
 	int AuxiliaryCounter;
 
-	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
+	for (AuxiliaryCounter = 0; AuxiliaryCounter < (LogMaxLength - 8); AuxiliaryCounter++) {
 		if (CollectedData[AuxiliaryCounter] > 0) {
 			AuxiliaryTemperature =+ CollectedData[AuxiliaryCounter];
 			ActualDataSize++;
 		}
 	}
-	LogAvarageTemperature = AuxiliaryTemperature/ ActualDataSize;
+	LogAvarageTemperature = AuxiliaryTemperature / ActualDataSize;
 	
 	LogMaximumTemperature = LogMaximumTemperatureBuffer;
 	LogMinimumTemperature = LogMinimumTemperatureBuffer;
@@ -34,15 +34,15 @@ void LogRefresh(void) {
 }
 
 void LogOverview(void) {
-	int LogOverviewMode = 0, LogMaxLength, DisplayFlag, AuxiliaryCounter;
+	int LogOverviewMode = 0, DisplayFlag, AuxiliaryCounter, LogRefreshMod = 0, LogRefreshCounter = 0;
 	char PrintData[13];
 	int TimeBaseVector[LOG_DATA_SIZE];
 
 	for (AuxiliaryCounter = 0; AuxiliaryCounter < LOG_DATA_SIZE; AuxiliaryCounter++) {
-		TimeBaseVector[AuxiliaryCounter] = 10 * AuxiliaryCounter;
+		TimeBaseVector[AuxiliaryCounter] = 15 * AuxiliaryCounter;
 	}
 
-	LogMaxLength = LOG_DATA_SIZE + 8;
+	LogMaxLength = (TimeCounter / 10) + 8;
 
 	DisplayPrint("Resultados:", NO_CONTENT, NO_MENU);
 	delay(DELAY_PERIOD_LOG);
@@ -52,7 +52,11 @@ void LogOverview(void) {
 	DisplayPrint("Temp. media(C):", LogAvarageTemperature, NO_MENU);
 
 	while (!ButtonVerification(BUTTON_NEXT)) {
-		LogRefresh();
+		
+		LogRefreshMod = ++LogRefreshCounter % DATA_COLLECT_RATE;
+		if (LogRefreshMod) {
+			LogRefresh(); 		
+		}
 
 		if (ButtonVerification(BUTTON_PLUS)) {
 			DisplayFlag = VALUE_CHANGED;
@@ -98,7 +102,7 @@ void LogOverview(void) {
 				default: break;
 			}
 
-			if ((LogOverviewMode >= LOG_COLLECTED_DATA) && (LogOverviewMode <= (ActualDataSize + 8))) {
+			if (LogOverviewMode >= LOG_COLLECTED_DATA) {
 				if (CollectedData[LogOverviewMode-8] > 0) {
 					sprintf(PrintData, "%d | %d", CollectedData[LogOverviewMode-8], TimeBaseVector[LogOverviewMode-8]);
 					DisplayPrint("Temp.x Tempo(s):", NO_CONTENT, PrintData);

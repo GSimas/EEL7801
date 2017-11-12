@@ -27,14 +27,14 @@
 #define SAFETY_TEMPERATURE			110
 #define SAFETY_TIME					30
 
-#define LOG_DATA_SIZE				((SAFETY_TIME * 6) + 15)	// ((SAFETY_TIME * SecondsConvertion) + CoolingTime)
+#define LOG_DATA_SIZE				((SAFETY_TIME * 4) + 15)	// ((SAFETY_TIME * SecondsConvertion) + CoolingTime)
 #define COLD_HOLDER					40	
 
-#define PERIOD						200
-#define PERIODS_IN_SEC				(1000 / PERIOD)			// 1 second. WARNING! Use only integer numbers to avoid truncation
+#define PERIOD						500
+#define PERIODS_IN_SEC				(1000 / PERIOD)				// 1 second. WARNING! Use only integer numbers to avoid truncation
 
 #define RESET_PRESSED_TIME			(PERIODS_IN_SEC * 5)
-#define DATA_COLLECT_RATE			(PERIODS_IN_SEC * 10)
+#define DATA_COLLECT_RATE			(PERIODS_IN_SEC * 15)
 
 /*
  * Function: ResetSystemVariables(void)

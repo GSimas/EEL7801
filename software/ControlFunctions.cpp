@@ -88,6 +88,7 @@ void ControlProcessDynamicChange(void) {
 	MenuTimeSelect();
 	EndRestoreTime = millis();
 	RestoreTime = RestoreTime + (EndRestoreTime - StartRestoreTime);
+	LEDDebugBlink(TURN_ON);								// Blink LED Debug
 }
 
 void ControlProcess(void) {
