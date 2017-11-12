@@ -1,5 +1,5 @@
 /*
- * peripherals.h
+ * Peripherals.h
  *
  *  Created on: 25 de ago de 2017
  *      Author: André
@@ -11,7 +11,7 @@
 #include <Arduino.h>
 #include <string.h>
 #include <LiquidCrystal.h>
-#include "hardware_abstraction.h"
+#include "HardwareAbstractionLayer.h"
 
 // Constants Abstraction
 #define DISPLAY_LINE_LENGTH		16
@@ -95,10 +95,10 @@ void ActuatorActivation(int TurnMode, int ActuatorSelection);
 void LEDDebugSetup(void);
 
 /*
- * Function: LEDDebugBlink(int BlinkFrequency)
+ * Function: LEDDebugBlink(int TurnMode)
  * Blink the blue Debug LED
- * Parameter: (BlinkFrequency).
+ * Parameter: (TurnMode).
  */
-void LEDDebugBlink(int BlinkFrequency);
+void LEDDebugBlink(int TurnMode);
 
 #endif /* PERIPHERALS_H_ */

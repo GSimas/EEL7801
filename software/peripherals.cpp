@@ -1,11 +1,11 @@
 /*
- * peripherals.cpp
+ * Peripherals.cpp
  *
  *  Created on: 25 de ago de 2017
  *      Author: André
  */
 
-#include "peripherals.h"
+#include "Peripherals.h"
 
 /* Sensor Functions */
 
@@ -122,18 +122,12 @@ void LEDDebugSetup(void) {
 	pinMode(DEBUG_LED, OUTPUT);
 }
 
-void LEDDebugBlink(int BlinkFrequency) {
-	float BlinkPeriod;
-
-	if (BlinkFrequency < 5) {
+void LEDDebugBlink(int TurnMode) {
+	if (TurnMode) {
 		digitalWrite(DEBUG_LED, HIGH);
 	}
-	else {
-		BlinkPeriod = 1000 / BlinkFrequency;
-		digitalWrite(DEBUG_LED, HIGH);	
-		delay(BlinkPeriod);
+	else {	
 		digitalWrite(DEBUG_LED, LOW);
-		delay(BlinkPeriod);
 	} 
 }
 
