@@ -24,10 +24,14 @@ extern unsigned long LogCoolingTimeStart, LogInterruptTimeStart, LogInterruptTim
 extern float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
 extern long TimeCounter;
 
-#define DELAY_PERIOD_CONTROL		1500
+#define DELAY_PERIOD_CONTROL			1500
+#define DELAY_PERIOD_CONTROL_START		1000
 
-#define VIEW_TIME					0
-#define VIEW_TEMPERATURE			1
+#define TEMPERATURE_START_RANGE			30
+#define CONTROL_RANGE_TEMPERATURE		2		
+
+#define VIEW_TIME						0
+#define VIEW_TEMPERATURE				1
 
 /*
  * Function: ControlStart(void)

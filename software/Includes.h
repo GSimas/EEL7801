@@ -23,7 +23,6 @@
 
 #define DEFAULT_TEMPERATURE			50
 #define DEFAULT_TIME				5
-#define RANGE_TEMPERATURE			1.0
 #define SAFETY_TEMPERATURE			110
 #define SAFETY_TIME					30
 
@@ -31,7 +30,7 @@
 #define COLD_HOLDER					40	
 
 #define PERIOD						500
-#define PERIODS_IN_SEC				(1000 / PERIOD)				// 1 second. WARNING! Use only integer numbers to avoid truncation
+#define PERIODS_IN_SEC				(1000 / PERIOD)				// 1 second. WARNING! Use only integer numbers to avoid truncation	
 
 #define RESET_PRESSED_TIME			(PERIODS_IN_SEC * 5)
 #define DATA_COLLECT_RATE			(PERIODS_IN_SEC * 15)
