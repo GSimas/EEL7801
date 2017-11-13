@@ -27,7 +27,7 @@ void ControlStart(void) {
 	LogMaximumTemperatureBuffer = SensorRoutine();
 	LogHeatingTimeStart = millis();
 
-	while (SensorRoutine() < TemperatureSelect + TEMPERATURE_START_RANGE) {
+	while (SensorRoutine() < TEMPERATURE_START_LIMIT) {
 		SensorTemperature = SensorRoutine();
 
 		if (LogMaximumTemperatureBuffer < SensorTemperature) {
@@ -51,22 +51,18 @@ void ControlStart(void) {
 		LEDDebugBlink(TURN_OFF);							// Blink LED Debug
 	}
 
-	while (SensorRoutine() < TemperatureSelect) {
-		DisplayMod = DisplayCounter++ % (PERIODS_IN_SEC * 2);
-		if (DisplayMod == 0) {
-			DisplayPrint("Esperando...", SensorTemperature, NO_MENU);
+	ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
+	delay(DELAY_PERIOD_SECURITY_TIME);
+
+	if (TemperatureSelect >= SLOW_PASTEURIZATION) {
+		if (TemperatureSelect >= FAST_PASTEURIZATION) {
+			DisplayPrint("Pasteurizacao", NO_CONTENT, "rapida");
+			ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
+			delay(DELAY_PERIOD_HEATING_FAST);
 		}
-
-		//SwitchInterrupt();
-
-		/*
-		DataCollectModStart = DataCollectCounterStart++ % DATA_COLLECT_RATE;
-		if (DataCollectModStart == 0) {
-			CollectedData[AuxiliaryCounterData++] = SensorRoutine(); 		
-		}
-		*/
-
-		delay(PERIOD);
+		DisplayPrint("Pasteurizacao", NO_CONTENT, "lenta");
+		ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
+		delay(DELAY_PERIOD_HEATING_SLOW);
 	}
 
 	LogMinimumTemperatureBuffer = SensorRoutine();
