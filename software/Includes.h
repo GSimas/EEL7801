@@ -21,13 +21,13 @@
 #define VALUE_CHANGED				1
 #define VALUE_NOT_CHANGED			0	
 
-#define DEFAULT_TEMPERATURE			50
-#define DEFAULT_TIME				5
-#define SAFETY_TEMPERATURE			110
-#define SAFETY_TIME					30
+#define DEFAULT_TEMPERATURE			65
+#define DEFAULT_TIME				20
+#define SAFETY_TEMPERATURE			80
+#define SAFETY_TIME					60
 
 //#define LOG_DATA_SIZE				((10 * 4) + 15)	// ((SAFETY_TIME * SecondsConvertion) + CoolingTime)
-#define COLD_HOLDER					40	
+#define COLD_HOLDER					25	
 
 #define PERIOD						500
 #define PERIODS_IN_SEC				(1000 / PERIOD)				// 1 second. WARNING! Use only integer numbers to avoid truncation	
