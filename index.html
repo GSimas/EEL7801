@@ -33,7 +33,7 @@
 			<div class="content">
 				<div class="inner">
 					<h1>P.A.L.O.M.A.</h1>
-					<h3>Projeto de Aquecedor Local Operado por Microcontrolador ATMEGA</h3>
+					<h3>Pasteurizador Automático Local Operado por Microcontrolador ATMEGA</h3>
 					<h2>EEL7801</h2>
 					<h3>Projeto em Eletrônica I</h3>
 					<p>Universidade Federal de Santa Catarina (UFSC)
@@ -58,12 +58,12 @@
 			<!-- Intro -->
 			<article id="intro">
 				<h2 class="major">Sobre</h2>
-				<span class="image main"><img src="site/images/code-min.jpg" alt="" /></span>
+				<span class="image main"><img src="site/images/paloma1.jpg" alt="" /></span>
 				<h3>Descrição</h3>
 				<div align="justify">
-				<p>Projeto em parceria com a Empresa Júnior <a href="http://conaq.com.br/" target="_blank">CONAQ</a>, vinculado ao Departamento
-					de Engenharia Química (EQA). Sistema de "forno" de pasteurização/antimicrobiano. Relevante para indústria alimentícia,
-					controle de qualidade de alimentos e saúde. Mais viável economicamente que os disponíveis no mercado. Depurável e personalizável,
+					<p>Projeto em parceria com a Empresa Júnior <a href="http://conaq.com.br/" target="_blank">CONAQ</a>, vinculado ao Departamento
+						de Engenharia Química e Alimentos <a href="http://eqa.ctc.ufsc.br/" target="_blank">(EQA)</a> da Universidade Federal de Santa Catarina <a href="http://ufsc.br" target="_blank">(UFSC)</a>. Sistema de "forno" de pasteurização/antimicrobiano. Relevante para indústria alimentícia,
+						controle de qualidade de alimentos e saúde. Mais viável economicamente que os disponíveis no mercado. Depurável e personalizável,
 					de acordo com a disponibilização de código e materiais necessários para o entendimento do projeto.</p>
 				</div>
 				<h3>Integrantes</h3>
@@ -81,172 +81,175 @@
 				Nome: Projeto em Eletrônica Nível 1
 				<p>Horas/Aula: 54
 					<br>Tipo: Obrigatória
-					<br>Mais Informações: <a href="http://cagr.sistemas.ufsc.br/relatorios/curriculoCurso?curso=235" target="_blank">Currículo do Curso</a>					e <a href="http://lrf.ufsc.br/instruction/undergraduate-courses/eel7801-projeto-em-eletronica-nivel-i/" target="_blank">Site da Disciplina</a></p>
-				<h3>Objetivo Geral</h3>
-				<div align="justify">
-				<p>Desenvolver habilidades de trabalho em equipe e de auto-aprendizagem a partir da solução de problemas.</p>
-				</div>
-				<h3>Objetivos Específicos</h3>
-				<div align="justify">
-				<p>
-					<ul>
-						<li>Estimular a criatividade dos alunos</li>
-						<li>Promover a busca por conhecimentos disponíveis no ambiente do curso, mas nem sempre identificados</li>
-						<li>Familiarizar o aluno com o fluxo de projeto de sistemas eletrônicos</li>
-						<li>Introduzir ferramentas de gestão de projetos de engenharia</li>
-						<li>Promover a inserção dos alunos em grupos de pesquisa</li>
-						<li>Incentivar o aprendizado a partir da resolução de problemas.</li>
-					</ul>
-				</p>
-				</div>
-				<h3>Metodologia</h3>
-				<div align="justify">
-				<p>
-					<ul>
-						<li>Ao longo do semestre, os alunos se reunirão semanalmente com o tutor da disciplina para discutir o andamento do projeto,
-							que será desenvolvido por etapas</li>
-						<li>Os projetos poderão ser individuais ou desenvolvidos em equipes de até 4 alunos (mantendo-se a coerência entre complexidade
-							e dimensão da equipe)</li>
-						<li>Haverá uma etapa de identificação e especificação do problema, que será trazido pelo aluno ou sugerido pelo tutor</li>
-						<li>Em seguida, haverá um momento para planejamento, quando o aluno identificará os caminhos que o levarão à resolução
-							do problema
-						</li>
-						<li>Na sequência, o aluno passará à execução propriamente dita do problema</li>
-						<li>Finalmente, ao fim do semestre, o aluno deverá:
-							<ul>
-								<li>Realizar apresentação oral sumarizando o semestre</li>
-								<li>Fazer demonstração experimental</li>
-								<li>Entregar um relatório escrito</li>
-							</ul>
-						</li>
-					</ul>
-				</p>
-				</div>
-				<h3>Ferramentas de Acompanhamento</h3>
-				<p>
-					Os grupos devem utilizar um software de gestão de projetos:
-					<ul>
-						<li><a href="http://live.gnome.org/Planner" target="_blank">Planner</a> (Linux - open source)</li>
-						<li><a href="http://www.microsoft.com/project/en/us/default.aspx" target="_blank">MS Project</a> (Windows - pago)</li>
-						<br>O andamento do projeto pode ser preferencialmente documentado no <a href="http://jupyter.org/" target="_blank">Jupyter Notebook</a>
-					</ul>
-				</p>
-			</article>
-
-			<!-- About -->
-			<article id="about">
-				<h2 class="major">Projeto</h2>
-				<span class="image main"><img src="site/images/pic03.jpg" alt="" /></span>
-				<h3>Problemática</h3>
-				<div align="justify">
-					<p>
-						<ul>
-							<li><b>Controle de Temperatura:</b> é necessário verificar a temperatura do conteúdo alimentício para assegurar a correta
-								pasteurização, mas os equipamentos disponíveis no mercado atualmente não são baratos.</li>
-							<li><b>Manutenção da Quantidade de Calor:</b> para realizar o processo deve haver uma fonte de calor, no entanto, como
-								a empresa não dispõe do equipamento adequado, utiliza um fogão convencional.</li>
-							<li><b>Aquecimento Uniforme:</b> um desafio encontrado é aquecer o conteúdo da forma mais uniforme possível, pois é natural
-								as extremidades externas aquecerem mais rapidamente que o centro.</li>
-							<li><b>Equipamento Confiável:</b> o método atualmente utilizado não é prático e demanda esforço, porque a falta de equipamentos
-								adequados dificulta a realização de testes.</li>
-						</ul>
-					</p>
-				</div>
-				<h3>Objetivos</h3>
-				<div align="justify">
-					<p>
-						<ul>
-							<li><b>Aquecimento</b> uniforme e eficiente para correta pasteurização</li>
-							<li><b>Controle</b> eficaz e realização de ajustes quando necessário</li>
-							<li><b>Segurança:</b> o equipamento não pode oferecer perigo aos usuários</li>
-							<li><b>Preço:</b> deve se apresentar sob um preço acessível, pois, atualmente, apenas um termômetro custaria mais de R$300,00</li>
-						</ul>
-					</p>
-				</div>
-				<h3>O quê</h3>
-				<div align="justify">
+					<br>Mais Informações: <a href="http://cagr.sistemas.ufsc.br/relatorios/curriculoCurso?curso=235" target="_blank">Currículo do Curso</a>					e <a href="http://lrf.ufsc.br/instruction/undergraduate-courses/eel7801-projeto-em-eletronica-nivel-i/" target="_blank">Site da Disciplina</a>
+					<br>Professor: <a href="http://rangel.paginas.ufsc.br/" target="_blank">Fernando Rangel</a></p>
+					<h3>Objetivo Geral</h3>
+					<div align="justify">
+						<p>Desenvolver habilidades de trabalho em equipe e de auto-aprendizagem a partir da solução de problemas.</p>
+					</div>
+					<h3>Objetivos Específicos</h3>
 					<div align="justify">
 						<p>
-							Equipamento com sistema automatizado de esterilização / forno antimicrobiano para indústria alimentícia. Produto viável em
-							porte, econômico e de precisão (preferencialmente). Realizar verificação de variáveis no processo, temperatura (principalmente),
-							entre outras relevantes para o objetivo de efetuar controle do aquecimento e garantir a eficácia do procedimento.
+							<ul>
+								<li>Estimular a criatividade dos alunos</li>
+								<li>Promover a busca por conhecimentos disponíveis no ambiente do curso, mas nem sempre identificados</li>
+								<li>Familiarizar o aluno com o fluxo de projeto de sistemas eletrônicos</li>
+								<li>Introduzir ferramentas de gestão de projetos de engenharia</li>
+								<li>Promover a inserção dos alunos em grupos de pesquisa</li>
+								<li>Incentivar o aprendizado a partir da resolução de problemas.</li>
+							</ul>
 						</p>
 					</div>
+					<h3>Metodologia</h3>
+					<div align="justify">
+						<p>
+							<ul>
+								<li>Ao longo do semestre, os alunos se reunirão semanalmente com o tutor da disciplina para discutir o andamento do projeto,
+								que será desenvolvido por etapas</li>
+								<li>Os projetos poderão ser individuais ou desenvolvidos em equipes de até 4 alunos (mantendo-se a coerência entre complexidade
+								e dimensão da equipe)</li>
+								<li>Haverá uma etapa de identificação e especificação do problema, que será trazido pelo aluno ou sugerido pelo tutor</li>
+								<li>Em seguida, haverá um momento para planejamento, quando o aluno identificará os caminhos que o levarão à resolução
+									do problema
+								</li>
+								<li>Na sequência, o aluno passará à execução propriamente dita do problema</li>
+								<li>Finalmente, ao fim do semestre, o aluno deverá:
+									<ul>
+										<li>Realizar apresentação oral sumarizando o semestre</li>
+										<li>Fazer demonstração experimental</li>
+										<li>Entregar um relatório escrito</li>
+									</ul>
+								</li>
+							</ul>
+						</p>
+					</div>
+					<h3>Ferramentas de Acompanhamento</h3>
+					<p>
+						Os grupos devem utilizar um software de gestão de projetos:
+						<ul>
+							<li><a href="http://live.gnome.org/Planner" target="_blank">Planner</a> (Linux - open source)</li>
+							<li><a href="http://www.microsoft.com/project/en/us/default.aspx" target="_blank">MS Project</a> (Windows - pago)</li>
+							<br>O andamento do projeto pode ser preferencialmente documentado no <a href="http://jupyter.org/" target="_blank">Jupyter Notebook</a>
+						</ul>
+					</p>
+				</article>
+
+				<!-- About -->
+				<article id="about">
+					<h2 class="major">Projeto</h2>
+					<span class="image main"><img src="site/images/paloma2.jpg" alt="" /></span>
+					<h3>Problemática</h3>
+					<div align="justify">
+						<p>
+							<ul>
+								<li><b>Controle de Temperatura:</b> é necessário verificar a temperatura do conteúdo alimentício para assegurar a correta
+								pasteurização, mas os equipamentos disponíveis no mercado atualmente não são baratos.</li>
+								<li><b>Manutenção da Quantidade de Calor:</b> para realizar o processo deve haver uma fonte de calor, no entanto, como
+								a empresa não dispõe do equipamento adequado, utiliza um fogão convencional.</li>
+								<li><b>Aquecimento Uniforme:</b> um desafio encontrado é aquecer o conteúdo da forma mais uniforme possível, pois é natural
+								as extremidades externas aquecerem mais rapidamente que o centro.</li>
+								<li><b>Equipamento Confiável:</b> o método atualmente utilizado não é prático e demanda esforço, porque a falta de equipamentos
+								adequados dificulta a realização de testes.</li>
+							</ul>
+						</p>
+					</div>
+					<h3>Objetivos</h3>
+					<div align="justify">
+						<span class="image right"><img src="site/images/paloma-matriz.jpg" alt="" /></span>
+						<p>
+							<ul>
+								<li><b>Aquecimento</b> uniforme e eficiente para correta pasteurização</li>
+								<li><b>Controle</b> eficaz e realização de ajustes quando necessário</li>
+								<li><b>Segurança:</b> o equipamento não pode oferecer perigo aos usuários</li>
+								<li><b>Preço:</b> deve se apresentar sob um preço acessível, pois, atualmente, apenas um termômetro custaria mais de R$300,00</li>
+							</ul>
+						</p>
+					</div>
+					<h3>O quê</h3>
+					<div align="justify">
+						<div align="justify">
+							<p>
+								Equipamento com sistema automatizado de esterilização / forno antimicrobiano para indústria alimentícia. Produto viável em
+								porte, econômico e de precisão (preferencialmente). Realizar verificação de variáveis no processo, temperatura (principalmente),
+								entre outras relevantes para o objetivo de efetuar controle do aquecimento e garantir a eficácia do procedimento.
+							</p>
+						</div>
+					</div>
+					<span class="image fit"><img src="site/images/paloma3.jpg" alt="" /></span>
+				</article>
+
+				<!-- Contact -->
+				<article id="contact">
+					<h2 class="major">Contato</h2>
+					<p><font color="pink">Formulário indisponível no momento! Utilize outras formas de contato</font></p>
+					<form method="post" action="#">
+						<div class="field half first">
+							<label for="name">Nome</label>
+							<input type="text" name="name" id="name" />
+						</div>
+						<div class="field half">
+							<label for="email">Email</label>
+							<input type="text" name="email" id="email" />
+						</div>
+						<div class="field">
+							<label for="message">Mensagem</label>
+							<textarea name="message" id="message" rows="4"></textarea>
+						</div>
+						<ul class="actions">
+							<li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Enviar</button></li>
+							<li><input type="reset" value="Resetar" /></li>
+						</ul>
+					</form>
+					<!-- Modal -->
+					<div id="myModal" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Modal Header</h4>
+								</div>
+								<div class="modal-body">
+									<p>Some text in the modal.</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<p>Emails:<br><a href="@mailto:gustavosimassilva@gmail.com">gustavosimassilva@gmail.com</a><br><a href="@mailto:andrempmattos@gmail.com">andrempmattos@gmail.com</a>
+						<br><a href="@mailto:ygorpereiraeel@gmail.com">ygorpereiraeel@gmail.com</a></p>
+						<ul class="icons">
+							<li><a href="http://ufsc.br/" target="_blank" class="icon fa-link"><span class="label">UFSC</span></a></li>
+							<li><a href="https://www.facebook.com/simasgs" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+							<li><a href="https://github.com/GSimas/EEL7801/" target="_blank" class="icon fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</article>
+
 				</div>
-			</article>
 
-			<!-- Contact -->
-			<article id="contact">
-				<h2 class="major">Contato</h2>
-				<p><font color="white">Formulário indisponível no momento! Utilize outras formas de contato</font></p>
-				<form method="post" action="#">
-					<div class="field half first">
-						<label for="name">Nome</label>
-						<input type="text" name="name" id="name" />
-					</div>
-					<div class="field half">
-						<label for="email">Email</label>
-						<input type="text" name="email" id="email" />
-					</div>
-					<div class="field">
-						<label for="message">Mensagem</label>
-						<textarea name="message" id="message" rows="4"></textarea>
-					</div>
-					<ul class="actions">
-						<li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Enviar</button></li>
-						<li><input type="reset" value="Resetar" /></li>
-					</ul>
-				</form>
-				<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-  
-	  <!-- Modal content-->
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <button type="button" class="close" data-dismiss="modal">&times;</button>
-		  <h4 class="modal-title">Modal Header</h4>
-		</div>
-		<div class="modal-body">
-		  <p>Some text in the modal.</p>
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		</div>
-	  </div>
-  
-	</div>
-  </div>
-				<p>Emails:<br><a href="@mailto:gustavosimassilva@gmail.com">gustavosimassilva@gmail.com</a><br><a href="@mailto:andrempmattos@gmail.com">andrempmattos@gmail.com</a>
-				<br><a href="@mailto:ygorpereiraeel@gmail.com">ygorpereiraeel@gmail.com</a></p>
-				<ul class="icons">
-					<li><a href="http://ufsc.br/" target="_blank" class="icon fa-link"><span class="label">UFSC</span></a></li>
-					<li><a href="https://www.facebook.com/simasgs" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="https://github.com/GSimas/EEL7801/" target="_blank" class="icon fa-github"><span class="label">GitHub</span></a></li>
-				</ul>
-			</article>
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">&copy; <a href="http://gsimas.github.io" target="_blank">GSimas</a>. Template: Dimension by <a href="https://html5up.net">HTML5 UP</a>.</p>
+				</footer>
 
-		</div>
+			</div>
 
-		<!-- Footer -->
-		<footer id="footer">
-			<p class="copyright">&copy; <a href="http://gsimas.github.io" target="_blank">GSimas</a>. Template: Dimension by <a href="https://html5up.net">HTML5 UP</a>.</p>
-		</footer>
+			<!-- BG -->
+			<div id="bg"></div>
 
-	</div>
+			<!-- Bootstrap -->
+			<script src="site/assets/js/bootstrap.min.js"></script>
 
-	<!-- BG -->
-	<div id="bg"></div>
+			<!-- Scripts -->
+			<script src="site/assets/js/jquery.min.js"></script>
+			<script src="site/assets/js/skel.min.js"></script>
+			<script src="site/assets/js/util.js"></script>
+			<script src="site/assets/js/main.js"></script>
 
-	<!-- Bootstrap -->
-	<script src="site/assets/js/bootstrap.min.js"></script>
+		</body>
 
-	<!-- Scripts -->
-	<script src="site/assets/js/jquery.min.js"></script>
-	<script src="site/assets/js/skel.min.js"></script>
-	<script src="site/assets/js/util.js"></script>
-	<script src="site/assets/js/main.js"></script>
-
-</body>
-
-</html>
+		</html>
