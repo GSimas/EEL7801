@@ -8,7 +8,7 @@
 #include "ControlFunctions.h"
 
 int AuxiliaryCounterData = 0;
-int ContentViewFlag = VIEW_TIME;
+int ContentViewFlag = VIEW_TEMPERATURE;
 unsigned long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
 
 /*
@@ -20,7 +20,7 @@ void(* resetFunc) (void) = 0;                // Declare reset function at addres
 void ControlStart(void) {
 	float SensorTemperature;
 	unsigned long LogHeatingTimeStart = 0, LogHeatingTimeEnd = 0;
-	int DataCollectCounterStart = 0, DataCollectModStart = 0, DisplayCounter = 0, DisplayMod = 0;
+	int DataCollectCounterStart = 0, DataCollectModStart = 0, DisplayCounter = 0, DisplayMod = 0, DelayCounter = 0;
 
 	ActuatorActivation(TURN_ON, ACTUATOR_RELAY);			// Start the process.
 
@@ -57,12 +57,20 @@ void ControlStart(void) {
 	if (TemperatureSelect >= SLOW_PASTEURIZATION) {
 		if (TemperatureSelect >= FAST_PASTEURIZATION) {
 			DisplayPrint("Pasteurizacao", NO_CONTENT, "rapida");
-			ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
-			delay(DELAY_PERIOD_HEATING_FAST);
+			while (DelayCounter++ < DELAY_HEATING_FAST) {
+				ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
+				//SwitchInterrupt();
+				delay(DELAY_PERIOD_HEATING);
+			}
 		}
-		DisplayPrint("Pasteurizacao", NO_CONTENT, "lenta");
-		ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
-		delay(DELAY_PERIOD_HEATING_SLOW);
+		else {
+			DisplayPrint("Pasteurizacao", NO_CONTENT, "lenta");
+			while (DelayCounter++ < DELAY_HEATING_SLOW) {
+				ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
+				//SwitchInterrupt();
+				delay(DELAY_PERIOD_HEATING);
+			}
+		}
 	}
 
 	LogMinimumTemperatureBuffer = SensorRoutine();
@@ -119,10 +127,10 @@ void ControlProcess(void) {
 		LogMinimumTemperatureBuffer = CurrentTemperature;
 	}
 
-	if (CurrentTemperature >= (TemperatureSelect + CONTROL_RANGE_TEMPERATURE)) {
+	if (CurrentTemperature >= (TemperatureSelect)) {
 		ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
 	}
-	if (CurrentTemperature < TemperatureSelect)  {
+	if (CurrentTemperature < TemperatureSelect - CONTROL_RANGE_TEMPERATURE)  {
 		ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
 	}
 }
