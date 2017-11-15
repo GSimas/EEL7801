@@ -24,10 +24,10 @@ extern unsigned long LogCoolingTimeStart, LogInterruptTimeStart, LogInterruptTim
 extern float LogMaximumTemperatureBuffer, LogMinimumTemperatureBuffer;
 extern long TimeCounter;
 
-#define DELAY_PERIOD_CONTROL			10000
+#define DELAY_PERIOD_CONTROL			30000
 #define DELAY_PERIOD_CONTROL_START		1000
-#define DELAY_HEATING_SLOW				85
-#define DELAY_HEATING_FAST				160
+#define DELAY_HEATING_SLOW				100
+#define DELAY_HEATING_FAST				180
 #define DELAY_PERIOD_HEATING			1000
 #define DELAY_PERIOD_SECURITY_TIME		30000
 
