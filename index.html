@@ -10,6 +10,7 @@
 	<title>EEL7801 - Projeto em Eletrônica 1</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="referrer" content="origin">
 	<link rel="stylesheet" href="site/assets/css/main.min.css" />
 	<!-- Bootstrap  -->
 	<link rel="stylesheet" href="site/assets/css/bootstrap.css">
@@ -181,22 +182,23 @@
 				<!-- Contact -->
 				<article id="contact">
 					<h2 class="major">Contato</h2>
-					<p><font color="pink">Formulário indisponível no momento! Utilize outras formas de contato</font></p>
-					<form method="post" action="#">
+					<form method="POST" action="http://formspree.io/gustavosimassilva@gmail.com">
 						<div class="field half first">
 							<label for="name">Nome</label>
-							<input type="text" name="name" id="name" />
+							<input type="text" name="Nome" id="name" />
 						</div>
 						<div class="field half">
 							<label for="email">Email</label>
-							<input type="text" name="email" id="email" />
+							<input type="text" name="Email" id="email" />
 						</div>
 						<div class="field">
 							<label for="message">Mensagem</label>
-							<textarea name="message" id="message" rows="4"></textarea>
+							<textarea name="Mensagem" id="message" rows="4"></textarea>
 						</div>
 						<ul class="actions">
 							<li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Enviar</button></li>
+							<input type="hidden" name="_next" value="https://gsimas.github.io/EEL7801"/>
+							<input type="text" name="_gotcha" style="display:none"/>
 							<li><input type="reset" value="Resetar" /></li>
 						</ul>
 					</form>
