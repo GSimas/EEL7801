@@ -51,17 +51,20 @@ eletrônica.
 - [x] Pintar Tampa, posicionar switch
 - [x] Inserção do Display LCD na estrutura da torradeira
 - [x] Posicionamento do 1º sensor de temperatura
-- [ ] **Segundo Protótipo (09/11)**
+- [x] Consertar Formulário de Contato do site
+- [x] **Segundo Protótipo (09/11)**
 - [ ] Posicionamento do 2º sensor de temperatura
+- [ ] Reunião Conaq/Professor sobre Pasteurização
 - [ ] Fixar alavanca para não atingir placa frontal
 - [ ] Ajustar resistores para contraste do Display
 - [ ] Aplicar fita Kapton em partes restantes para isolamento
-- [ ] Modificações código (funções não-recursivas, timer)
+- [ ] Modificações código (funções não-recursivas, timer, calibração)
+- [ ] Elaborar Curvas de Aquecimento
 - [ ] Adaptações e testes finais (validação)
 - [ ] **Terceiro Protótipo/Versão Definitiva (23/11)**
 - [ ] Documentação (Tutorial - usuário e desenvolvedor)
 - [ ] Finalização do site
-- [ ] **Apresentação Final (30/11)**
+- [ ] **Apresentação Final (23/11 ou 30/11)**
 
 Referências:
 
