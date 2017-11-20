@@ -9,6 +9,7 @@
 
 int AuxiliaryCounterData = 0;
 int ContentViewFlag = VIEW_TEMPERATURE;
+int ControlProcessFlag = 0, NewMinimumTemperature = 0;
 unsigned long StartRestoreTime = 0, EndRestoreTime = 0, RestoreTime = 0;
 
 /*
@@ -27,7 +28,7 @@ void ControlStart(void) {
 	LogMaximumTemperatureBuffer = SensorRoutine();
 	LogHeatingTimeStart = millis();
 
-	while (SensorRoutine() < TEMPERATURE_START_LIMIT) {
+	while (SensorRoutine() < TemperatureSelect + CONTROL_RANGE_MIN_TEMPERATURE) {
 		SensorTemperature = SensorRoutine();
 
 		if (LogMaximumTemperatureBuffer < SensorTemperature) {
@@ -108,6 +109,7 @@ void ControlDisplayView(void) {
 
 void ControlProcessDynamicChange(void) {
 	ResetSystemVariables();
+  ControlProcessFlag = 0;
 	MenuTemperatureSelect();
 	MenuTimeSelect();
 	EndRestoreTime = millis();
@@ -127,12 +129,20 @@ void ControlProcess(void) {
 		LogMinimumTemperatureBuffer = CurrentTemperature;
 	}
 
-	if (CurrentTemperature >= (TemperatureSelect)) {
+	if ((CurrentTemperature >= (NewMinimumTemperature + CONTROL_RANGE_MAX_TEMPERATURE)) and ControlProcessFlag == 1) {
 		ActuatorActivation(TURN_OFF, ACTUATOR_RELAY);
 	}
-	if (CurrentTemperature < TemperatureSelect - CONTROL_RANGE_TEMPERATURE)  {
+ 
+	if ((CurrentTemperature < TemperatureSelect - CONTROL_RANGE_MIN_TEMPERATURE) and ControlProcessFlag == 0)  {
 		ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
+    ControlProcessFlag = 1;
+    NewMinimumTemperature = LogMinimumTemperatureBuffer;
 	}
+
+  if ((CurrentTemperature < (NewMinimumTemperature - CONTROL_RANGE_MIN_TEMPERATURE)) and ControlProcessFlag == 1){
+    ActuatorActivation(TURN_ON, ACTUATOR_RELAY);
+    NewMinimumTemperature = LogMinimumTemperatureBuffer;
+  }
 }
 
 void ControlSystemRun(void) {
