@@ -56,12 +56,12 @@ eletrônica.
 - [ ] Posicionamento do 2º sensor de temperatura
 - [ ] Reunião Conaq/Professor sobre Pasteurização
 - [ ] Fixar alavanca para não atingir placa frontal
-- [ ] Ajustar resistores para contraste do Display
-- [ ] Aplicar fita Kapton em partes restantes para isolamento
-- [ ] Modificações código (funções não-recursivas, timer, calibração)
-- [ ] Elaborar Curvas de Aquecimento
-- [ ] Adaptações e testes finais (validação)
-- [ ] **Terceiro Protótipo/Versão Definitiva (23/11)**
+- [x] Ajustar resistores para contraste do Display
+- [x] Aplicar fita Kapton em partes restantes para isolamento
+- [x] Modificações código (funções não-recursivas, timer, calibração, escada invertida)
+- [x] Elaborar Curvas de Aquecimento
+- [x] Adaptações e testes finais (validação)
+- [x] **Terceiro Protótipo/Versão Definitiva (23/11)**
 - [ ] Documentação (Tutorial - usuário e desenvolvedor)
 - [ ] Finalização do site
 - [ ] **Apresentação Final (23/11 ou 30/11)**
