@@ -62,9 +62,10 @@ eletrônica.
 - [x] Elaborar Curvas de Aquecimento
 - [x] Adaptações e testes finais (validação)
 - [x] **Terceiro Protótipo/Versão Definitiva (23/11)**
-- [ ] Documentação (Tutorial - usuário e desenvolvedor)
-- [ ] Finalização do site
-- [ ] **Apresentação Final (23/11 ou 30/11)**
+- [x] Documentação (Tutorial - usuário e desenvolvedor)
+- [x] Finalização do site
+- [x] **Apresentação Final (23/11 ou 30/11)**
+- [ ] Aperfeiçoamentos pós-semestre
 
 Referências:
 
